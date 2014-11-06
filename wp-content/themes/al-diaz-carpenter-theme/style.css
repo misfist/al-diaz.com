@@ -1,0 +1,22 @@
+/*
+Theme Name:     Al-Diaz Carpenter Theme
+Description:    Custom theme for carpenter.al-diaz.com based on Shaken.
+Author:         Pea
+Template:       shaken-grid-free
+
+(optional values you can add: Theme URI, Author URI, Version)
+*/
+
+@import url("../shaken-grid-free/style.css");
+
+.menu,
+.narrow-col,
+.wide-col h2:first-child {
+display: none;
+}
+
+.wide-col {
+width: 950px;
+}
+
+

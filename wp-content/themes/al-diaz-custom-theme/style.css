@@ -1,0 +1,11 @@
+/*
+Theme Name:     Al-Diaz Custom Theme
+Description:    Custom theme based on Shaken.
+Author:         Pea
+Template:       shaken-grid-free
+
+(optional values you can add: Theme URI, Author URI, Version)
+*/
+
+@import url("../shaken-grid-free/style.css");
+
