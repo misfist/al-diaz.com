@@ -543,7 +543,7 @@ a {
   transition: all .2s linear; }
   /* line 102, ../sass/partials/_base.scss */
   a:hover {
-    color: #ff4800; }
+    color: #ff0000; }
   /* line 108, ../sass/partials/_base.scss */
   a.rss-cat-icon {
     float: right;
@@ -1973,7 +1973,7 @@ a[rel=prettyPhoto] {
   line-height: 1.5; }
   /* line 1952, ../sass/partials/_base.scss */
   .entry a {
-    color: #ff4800; }
+    color: #ff0000; }
     /* line 1954, ../sass/partials/_base.scss */
     .entry a:hover {
       color: #000; }
@@ -2940,7 +2940,7 @@ img.alignleft {
   /* line 3052, ../sass/partials/_base.scss */
   .pagination span.current {
     color: white;
-    background-color: #ff4800;
+    background-color: #ff0000;
     text-shadow: 0 1px 0 #000;
     padding: 4px 10px 6px; }
   /* line 3061, ../sass/partials/_base.scss */
