@@ -1,7 +1,7 @@
 <?php get_header(); ?>
 
 <div id="content">
-	<?php tie_taxonomy_filter($taxonomy='tags', $exclude='3,17'); ?>
+	<?php tie_taxonomy_filter($taxonomy='all', $exclude='3,17'); ?>
 	<div id="grid">
 	<?php get_template_part( 'loop', 'index' );	?>
 	</div><!-- .grid /-->
