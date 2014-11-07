@@ -397,7 +397,7 @@ a.more-link, .post-title a, .pagenavi a, .main-menu li a, .subscribe-icons a, .f
 
 /* line 305, ../sass/partials/_custom.scss */
 #load-more:hover, #load-more:active {
-  background-color: #f5f3f4; }
+  background-color: #ff0000; }
 
 /* line 319, ../sass/partials/_custom.scss */
 a.pp_arrow_previous, a.pp_arrow_next {
@@ -454,7 +454,7 @@ a.jp-play, a.jp-pause {
   font-style: normal; }
 /* line 7, ../sass/partials/_base.scss */
 body {
-  background: #f5f3f4 url(images/patterns/body-bg1.png);
+  background: #ff0000 url(images/patterns/body-bg1.png);
   color: #333;
   font-family: "Lato", sans-serif;
   font-size: 14px; }
@@ -2491,7 +2491,7 @@ blockquote {
     color: #aaa; }
     /* line 2539, ../sass/partials/_base.scss */
     #wp-calendar tbody td {
-      background: #f5f3f4;
+      background: #ff0000;
       border: 1px solid white;
       padding: 3px 0 2px;
       text-align: center; }

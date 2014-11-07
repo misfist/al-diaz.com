@@ -5,7 +5,7 @@
 	font-style: normal;
 }
 body {
-	background: $color_wild_sand url(images/patterns/body-bg1.png);
+	background: $red url(images/patterns/body-bg1.png);
 	color: $gray3;
 	font-family: $sans;
 	font-size: 14px;
@@ -2537,7 +2537,7 @@ blockquote {
 	tbody {
 		color: $color_silver_chalice;
 		td {
-			background: $color_wild_sand;
+			background: $red;
 			border: 1px solid $white;
 			padding: 3px 0 2px;
 			text-align: center;
