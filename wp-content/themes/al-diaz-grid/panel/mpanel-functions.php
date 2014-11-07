@@ -18,7 +18,7 @@ add_action( 'admin_enqueue_scripts', 'tie_enqueue_pointer_script_style' );
  
 function tie_pointer_print_scripts() {
  
-	$pointer_content  = "<h3>Shared on www.MafiaShare.net Stop looking for it, it is right here!</h3>";
+	$pointer_content  = "<h3>" . theme_name . " Settings.</h3>";
 	$pointer_content .= "<p>From Here You can change ".theme_name." Theme Settings .</p>";
 	?>
  
