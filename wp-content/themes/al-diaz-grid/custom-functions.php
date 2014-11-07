@@ -17,18 +17,6 @@ function tie_taxonomy_filter($taxonomy='category', $enable='disable', $exclude='
 		if($taxonomy == 'all') { ?>
 
 			<?php
-			// Get tags
-			$tags = get_tags('exclude='.$exclude); 
-
-			// Display tags
-			foreach($tags as $tag) { ?>
-
-				<li><a href="#" data-filter=".tag-<?php echo $tag->slug ?>"><?php echo $tag->name ?></a></li>
-
-			<?php } ?>
-
-
-			<?php
 			// Check for excluded categories
 			$exc_home_cats = tie_get_option( 'exc_home_cats' );
 			if($exc_home_cats) {
@@ -42,6 +30,17 @@ function tie_taxonomy_filter($taxonomy='category', $enable='disable', $exclude='
 			foreach($categories as $category) { ?>
 
 				<li><a href="#" data-filter=".cat_<?php echo $category->term_id ?>"><?php echo $category->name ?></a></li>
+
+			<?php } ?>
+
+			<?php
+			// Get tags
+			$tags = get_tags('exclude='.$exclude); 
+
+			// Display tags
+			foreach($tags as $tag) { ?>
+
+				<li><a href="#" data-filter=".tag-<?php echo $tag->slug ?>"><?php echo $tag->name ?></a></li>
 
 			<?php } ?>
 
