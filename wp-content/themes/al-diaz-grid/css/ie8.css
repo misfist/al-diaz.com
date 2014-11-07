@@ -1,0 +1,7 @@
+﻿header .social-icons a , .footer-bottom .social-icons a{filter: none;}
+#main-content #grid, #main-content #content{width:100% !important;}
+#main-content .item-list, #load-more:link, #load-more:visited {	border:1px solid #ccc; }
+.flex-direction-nav .flex-next , .flexslider .flex-prev  { display:none;}
+.flexslider:hover .flex-next , .flexslider:hover .flex-prev { display:block;}
+.trans-head {filter: alpha(opacity=70);}
+header{ border-bottom:1px solid #ccc;}

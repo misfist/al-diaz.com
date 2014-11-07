@@ -1,0 +1,400 @@
+// Mixins
+
+
+//@extend-elements
+//original selectors
+//pre, code
+%extend_pre-code {
+	direction: ltr;
+	background: url(images/code-bg.png);
+	font: 11px/19px $mono;
+	padding: 3px;
+	display: block;
+	overflow-x: visible;
+	overflow-y: hidden;
+	margin: 0 0 20px 0;
+	color: $gray6;
+	border-top: 1px solid $color_bon_jour;
+	border-right: 1px solid $color_gallery;
+	border-bottom: 1px solid $color_gallery;
+	border-left: 1px solid $color_bon_jour;
+}
+
+//original selectors
+//#main-nav ul li a, .post-title a, .pagenavi a, a.more-link, .main-menu li a, .subscribe-icons a, .flickr_badge_image img
+%extend_list-links {
+	webkit-transition: all .2s ease-in-out;
+	//vendor-prefix found
+	//-moz-transition: all .2s ease-in-out
+	//vendor-prefix found
+	//-o-transition: all .2s ease-in-out
+	//vendor-prefix found
+	//-ms-transition: all .2s ease-in-out
+	//Instead of the line below you could use @includetransition($transition-1, $transition-2, $transition-3, $transition-4, $transition-5, $transition-6, $transition-7, $transition-8, $transition-9, $transition-10)
+	transition: all .2s ease-in-out;
+}
+
+//original selectors
+//#main-nav ul ul li, #main-nav ul ul li:first-child
+%extend_nav-list {
+	background: none !important;
+	z-index: 99999;
+	min-width: 180px;
+	border: 0 none;
+	border-bottom: 1px solid $white;
+	border-top: 1px solid $color_alto;
+	font-size: 12px;
+	height: auto;
+	margin: 0;
+}
+
+//original selectors
+//#main-nav ul li.current-menu-item a, #main-nav ul li.current-menu-item a:hover
+%extend_nav-list-links {
+	color: $black;
+	height: 40px;
+	line-height: 40px;
+	font-weight: bold;
+	border-top-color: $red;
+}
+
+//original selectors
+//.welcome-message:before, .welcome-message:after
+%extend_welcome-message {
+	position: absolute;
+	width: 40%;
+	height: 10px;
+	content: ' ';
+	left: 12px;
+	bottom: 15px;
+	background: transparent;
+	//vendor-prefix found
+	//-webkit-transform: skew(-5deg) rotate(-5deg)
+	//vendor-prefix found
+	//-moz-transform: skew(-5deg) rotate(-5deg)
+	//vendor-prefix found
+	//-ms-transform: skew(-5deg) rotate(-5deg)
+	//vendor-prefix found
+	//-o-transform: skew(-5deg) rotate(-5deg)
+	//Instead of the line below you could use @includetransform($scale, $rotate, $transx, $transy, $skewx, $skewy, $originx, $originy)
+	transform: skew(-5deg) rotate(-5deg);
+	//vendor-prefix found
+	//-webkit-box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3)
+	//vendor-prefix found
+	//-moz-box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3)
+	//Instead of the line below you could use @includebox-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+	box-shadow: 0 6px 15px $black_30;
+	z-index: -1;
+}
+
+//original selectors
+//.entry-quote, .entry-link
+%extend_quote {
+	background: $color_red_damask;
+	text-align: center;
+	padding: 15px;
+	color: $white;
+	font-family: $serif;
+	font-weight: normal;
+}
+
+//original selectors
+//.entry-quote h1, .entry-quote h2, .entry-link h1, .entry-link h2
+%extend_quote-header {
+	font-size: 21px;
+	line-height: 25px;
+	font-style: italic;
+	font-family: $serif;
+	font-weight: normal;
+}
+
+
+//original selectors
+//#login-form #log, #login-form #pwd, .widget-feedburner .feedburner-email
+%extend_feedburner {
+	border-color: $color_gallery;
+	border-top-color: $color_romance;
+	border-left-color: $color_romance;
+	background: $color_romance;
+	color: $gray5;
+	font: 12px $helvetica;
+	padding: 4px 7px;
+	margin-bottom: 10px;
+	//Instead of the line below you could use @includeborder-radius($radius, $vertical-radius)
+	border-radius: 3px;
+	//vendor-prefix found
+	//-moz-border-radius: 3px
+	//vendor-prefix found
+	//-webkit-border-radius: 3px
+	display: block;
+	width: 250px;
+	height: 24px;
+}
+
+//original selectors
+//.ads120-90 .ad-cell, .ads120-60 .ad-cell, .ads120-600 .ad-cell, .ads120-240 .ad-cell
+%extend_ad {
+	width: 120px;
+	height: 90px;
+	display: block;
+	margin: 3px 15px 12px 0;
+	float: left;
+}
+
+//original selectors
+//.footer-widget-container li, footer #tabbed-widget .tabs-wrap li
+%extend_footer-widget-list {
+	padding: 6px 12px 6px 0;
+	line-height: 18px;
+	overflow: hidden;
+	border-bottom: 1px solid $gray3 !important;
+	border-top: 1px solid $gray5;
+}
+
+//original selectors
+//.pagination a, .pagination span.extend, .pagination span.current
+%extend_pagination-links {
+	float: left;
+	//Instead of the line below you could use @includetext-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+	text-shadow: 0 1px 0 $white;
+	margin-right: 3px;
+	color: $gray7;
+	padding: 6px 10px 3px;
+}
+
+//original selectors
+//#commentform textarea, #commentform input
+%extend_text-input {
+	border-color: $color_gallery;
+	border-top-color: $color_romance;
+	border-left-color: $color_romance;
+	background: $color_romance;
+	color: $gray5;
+	font: 12px $helvetica;
+	padding: 4px 7px;
+	margin-bottom: 7px;
+	//Instead of the line below you could use @includeborder-radius($radius, $vertical-radius)
+	border-radius: 3px;
+	//vendor-prefix found
+	//-moz-border-radius: 3px
+	//vendor-prefix found
+	//-webkit-border-radius: 3px
+}
+
+//original selectors
+//.form-submit #submit, #login-form .login-button, .widget-feedburner .feedburner-subscribe
+%extend_button {
+	border: 1px solid $color_romance;
+	//vendor-prefix found
+	//background: -webkit-gradient(linear,50% 0,50% 100%,color-stop(0%,#FBFBFB),color-stop(100%,#EEE ))
+	//vendor-prefix found
+	//background: -webkit-linear-gradient(top,#FBFBFB 0,#EEE 100%)
+	//vendor-prefix found
+	//background: -moz-linear-gradient(top,#FBFBFB 0,#EEE 100%)
+	//vendor-prefix found
+	//background: -o-linear-gradient(top,#FBFBFB 0,#EEE 100%)
+	//vendor-prefix found
+	//background: -ms-linear-gradient(top,#FBFBFB 0,#EEE 100%)
+	background: linear-gradient(top,#FBFBFB 0,#EEE 100%);
+	//Instead of the line below you could use @includebox-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+	box-shadow: 0 1px 2px $black_30,inset 0 1px 0 $white_50;
+	color: $black;
+	//Instead of the line below you could use @includetext-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+	text-shadow: 0 1px 0 $white;
+	height: 30px;
+	line-height: 30px;
+	width: auto;
+	font-size: 13px;
+	padding: 0 15px;
+	//vendor-prefix found
+	//-moz-border-radius: 4px
+	//vendor-prefix found
+	//-webkit-border-radius: 4px
+	//Instead of the line below you could use @includeborder-radius($radius, $vertical-radius)
+	border-radius: 4px;
+	//vendor-prefix found
+	//-webkit-transition: background .40s
+	//vendor-prefix found
+	//-moz-transition: background .40s
+	//vendor-prefix found
+	//-o-transition: background .40s
+	//Instead of the line below you could use @includetransition($transition-1, $transition-2, $transition-3, $transition-4, $transition-5, $transition-6, $transition-7, $transition-8, $transition-9, $transition-10)
+	transition: background .40s;
+	position: relative;
+}
+
+//original selectors
+//.form-submit #submit:hover, #login-form .login-button:hover, .widget-feedburner .feedburner-subscribe:hover
+%extend_button-hover {
+	//vendor-prefix found
+	//background: -webkit-gradient(linear,50% 0,50% 100%,color-stop(0%,$white),color-stop(100%,#f8f8f8))
+	//vendor-prefix found
+	//background: -webkit-linear-gradient(top,$white 0,#f8f8f8 100%)
+	//vendor-prefix found
+	//background: -moz-linear-gradient(top,$white 0,#f8f8f8 100%)
+	//vendor-prefix found
+	//background: -o-linear-gradient(top,$white 0,#f8f8f8 100%)
+	//vendor-prefix found
+	//background: -ms-linear-gradient(top,$white 0,#f8f8f8 100%)
+	background: linear-gradient(top,$white ,$color_desert_storm 100%);
+}
+
+//original selectors
+//.isotope, .isotope .isotope-item
+%extend_isotope-transition {
+	//vendor-prefix found
+	//-webkit-transition-duration: 0.8s
+	//vendor-prefix found
+	//-moz-transition-duration: 0.8s
+	//vendor-prefix found
+	//-ms-transition-duration: 0.8s
+	//vendor-prefix found
+	//-o-transition-duration: 0.8s
+	//Instead of the line below you could use @includetransition-duration($duration-1, $duration-2, $duration-3, $duration-4, $duration-5, $duration-6, $duration-7, $duration-8, $duration-9, $duration-10)
+	transition-duration: 0.8s;
+}
+
+//original selectors
+//.isotope.no-transition, .isotope.no-transition .isotope-item, .isotope .isotope-item.no-transition
+%extend_isotope-no-transition {
+	//vendor-prefix found
+	//-webkit-transition-duration: 0s
+	//vendor-prefix found
+	//-moz-transition-duration: 0s
+	//vendor-prefix found
+	//-ms-transition-duration: 0s
+	//vendor-prefix found
+	//-o-transition-duration: 0s
+	//Instead of the line below you could use @includetransition-duration($duration-1, $duration-2, $duration-3, $duration-4, $duration-5, $duration-6, $duration-7, $duration-8, $duration-9, $duration-10)
+	transition-duration: 0s;
+}
+
+//original selectors
+//#load-more:link, #load-more:visited
+%extend_more-link {
+	display: block;
+	text-align: center;
+	padding: 10px 0;
+	color: $gray4;
+	margin: 10px auto;
+	text-decoration: none;
+	//vendor-prefix found
+	//-moz-border-radius: 3px
+	//Instead of the line below you could use @includeborder-radius($radius, $vertical-radius)
+	border-radius: 3px;
+	//vendor-prefix found
+	//-moz-box-shadow: 1px 1px 1px #999
+	//vendor-prefix found
+	//-webkit-box-shadow: 1px 1px 1px #999
+	//Instead of the line below you could use @includebox-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+	box-shadow: 1px 1px 1px $gray9;
+	background-color: $seashell;
+	//vendor-prefix found
+	//background: -moz-linear-gradient(100% 100% 90deg, $color_gallery, $white)
+	//vendor-prefix found
+	//background: -webkit-gradient(linear, 0% 0%, 0% 100%, from($white), to($color_gallery))
+	//vendor-prefix found
+	//background: -webkit-linear-gradient($white, $color_gallery)
+	//vendor-prefix found
+	//background: -o-linear-gradient($white, $color_gallery)
+	clear: both;
+}
+
+//original selectors
+//#load-more:hover, #load-more:active
+%extend_more-link-hover {
+	background-color: $color_wild_sand;
+	//vendor-prefix found
+	//background: -moz-linear-gradient(100% 100% 90deg, #eaeaea, #f5f5f5)
+	//vendor-prefix found
+	//background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#f5f5f5), to(#eaeaea))
+	//vendor-prefix found
+	//background: -webkit-linear-gradient($color_gallery, #eaeaea)
+	//vendor-prefix found
+	//background: -o-linear-gradient(#f5f5f5, #eaeaea)
+}
+
+//original selectors
+//a.pp_arrow_previous, a.pp_arrow_next
+%extend_prev-next-links {
+	display: block;
+	float: left;
+	height: 15px;
+	margin-top: 3px;
+	overflow: hidden;
+	text-indent: -10000px;
+	width: 14px;
+}
+
+//original selectors
+//a.pp_expand, a.pp_contract
+%extend_expand-contract {
+	cursor: pointer;
+	display: none;
+	height: 20px;
+	position: absolute;
+	right: 30px;
+	text-indent: -10000px;
+	top: 10px;
+	width: 20px;
+	z-index: 20000;
+}
+
+//original selectors
+//.pp_top .pp_right, .pp_bottom .pp_right
+%extend_list-links2 {
+	height: 20px;
+	left: auto;
+	position: absolute;
+	right: 0;
+	top: 0;
+	width: 20px;
+}
+
+//original selectors
+//a.jp-play, a.jp-pause
+%extend_play-pause {
+	width: 18px;
+	height: 18px;
+	float: left;
+	text-indent: -9999px;
+	outline: none;
+	margin: 0 0 0 -4px;
+}
+
+//original selectors
+//.jp-audio a.jp-mute, .jp-audio a.jp-unmute
+%extend_mute-unmute {
+	text-indent: -9999px;
+	float: right;
+	height: 18px;
+	width: 18px;
+	outline: none;
+}
+
+//original selectors
+//.widget, .search-widget input
+%extend_widget {
+	float: left;
+	width: 329px;
+	clear: none !important;
+	margin: 0 3px 20px;
+	//vendor-prefix found
+	//-webkit-column-break-inside: avoid
+	//vendor-prefix found
+	//-moz-column-break-inside: avoid
+	//Instead of the line below you could use @includecolumn-break-inside($value)
+	column-break-inside: avoid;
+}
+
+//original selectors
+//header .search-block, header .social-icons
+%extend_header-social {
+	position: relative !important;
+	left: auto !important;
+	right: auto !important;
+	float: none !important;
+	top: auto !important;
+	margin: 8px auto 0 !important;
+	width: 250px;
+}
