@@ -1,0 +1,183 @@
+// Main navigation
+
+#main-nav {
+	margin: 0 auto;
+	height: 40px;
+	text-transform: uppercase;
+	ul {
+		padding-top: 0;
+		margin-top: 0;
+		li {
+			position: relative;
+			height: 40px;
+			float: left;
+			a {
+				@extend %extend_list-links;
+				display: inline-block;
+				border: 1px solid transparent;
+				height: 40px;
+				line-height: 40px;
+				padding: 0 15px;
+				margin-top: -1px;
+				color: $white;
+				.sub-indicator {}
+				&:hover {
+					border-top-color: $red;
+					color: $white;
+				}
+			}
+			&.current-menu-item {
+				a {
+					@extend %extend_nav-list-links;
+					&:hover {
+						@extend %extend_nav-list-links;
+					}
+				}
+				ul a {
+					color: $black !important;
+				}
+			}
+			&:hover > {
+				a {
+					color: $white;
+				}
+				ul {
+					display: block;
+				}
+			}
+		}
+		ul {
+			display: none;
+			padding: 0;
+			position: absolute;
+			top: 40px;
+			width: 180px;
+			z-index: 99999;
+			float: left;
+			background: $black !important;
+			//vendor-prefix found
+			//-webkit-box-shadow: 0 3px 4px 1px rgba(0, 0, 0, 0.2)
+			//Instead of the line below you could use @includebox-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+			box-shadow: 0 3px 4px 1px $black_20;
+			//vendor-prefix found
+			//-webkit-border-bottom-right-radius: 3px
+			//vendor-prefix found
+			//-webkit-border-bottom-left-radius: 3px
+			//vendor-prefix found
+			//-moz-border-radius-bottomright: 3px
+			//vendor-prefix found
+			//-moz-border-radius-bottomleft: 3px
+			//Instead of the line below you could use @includeborder-bottom-right-radius($radius)
+			border-bottom-right-radius: 3px;
+			//Instead of the line below you could use @includeborder-bottom-left-radius($radius)
+			border-bottom-left-radius: 3px;
+			text-align: left;
+			li {
+				@extend %extend_nav-list;
+				color: $white;
+				&:first-child {
+					@extend %extend_nav-list;
+					border-top: 0 none !important;
+					color: $white;
+				}
+				&:hover > a {
+					color: $white !important;
+					padding-left: 15px !important;
+					padding-right: 5px !important;
+				}
+			}
+			ul {
+				right: auto;
+				left: 100%;
+				top: 0;
+				z-index: 99999;
+			}
+			:hover > a {
+				// color: $white !important;
+				padding-left: 15px !important;
+				padding-right: 5px !important;
+			}
+		}
+		&.sub-menu {
+			a {
+				border: 0 none;
+				background: none !important;
+				height: auto !important;
+				line-height: 1em;
+				padding: 10px;
+				width: 160px;
+				display: block !important;
+				margin-right: 0 !important;
+				z-index: 99999;
+				color: $white !important;
+				//Instead of the line below you could use @includetext-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+				// text-shadow: 0 1px 1px $white !important;
+				font-weight: normal !important;
+				&:hover {
+					border-top: none;
+				}
+			}
+			li.current-menu-item {
+				height: auto !important;
+				line-height: 12px;
+				a {
+					height: auto !important;
+					line-height: 12px;
+				}
+				&::after {
+					display: none;
+					border: 0 solid transparent;
+				}
+			}
+		}
+		:hover > a {
+			// color: $black;
+		}
+	}
+	.menu-alert {
+		padding-top: 10px;
+		font-style: italic;
+		text-align: center;
+	}
+	.main-menu {
+		margin: 0 auto;
+		border-top: 1px solid $color_gallery;
+	}
+	li.current-menu-item ul.sub-menu a {
+		height: auto !important;
+		line-height: 12px;
+	}
+}
+
+// Taxonomy filters
+#filters {
+	li {
+		background: $white;
+		padding: 6px 6px;
+		margin-bottom: 5px;
+		a {
+			padding: 6px;
+			font-family: $sans;
+			color: $black;
+			font-size: 16px;
+			line-height: inherit;
+		}
+
+		&.current,
+		&:hover {
+		
+			background: $black;
+			padding: 6px 8px;
+			webkit-transition: all .2s ease-in-out;
+	transition: all .2s ease-in-out;
+		}
+	}
+
+	li.current a,
+	li:hover a {
+		font-family: $sans !important;
+		font-style: normal;
+		color: $white;
+		border-radius: 0;
+	}
+}
