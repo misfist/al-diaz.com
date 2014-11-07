@@ -6,7 +6,7 @@ if (support("kill") && $_POST && !$error) {
 			$killed++;
 		}
 	}
-	queries_redirect(ME . "processlist=", lang('%d process(es) have been killed.', $killed), $killed || !$_POST["kill"]);
+	queries_adminer_redirect(ME . "processlist=", lang('%d process(es) have been killed.', $killed), $killed || !$_POST["kill"]);
 }
 
 page_header(lang('Process list'), $error);
@@ -31,7 +31,7 @@ foreach (process_list() as $i => $row) {
 		echo "</thead>\n";
 	}
 
-	echo "<tr" . odd() . ">" . (support("kill") ? "<td>" . checkbox("kill[]", $row["Id"], 0) : "");
+	echo "<tr" . odd() . ">" . (support("kill") ? "<td>" . adminer_checkbox("kill[]", $row["Id"], 0) : "");
 	foreach ($row as $key => $val) {
 		echo "<td>" . (
 			($jush == "sql" && $key == "Info" && preg_match("~Query|Killed~", $row["Command"]) && $val != "") ||

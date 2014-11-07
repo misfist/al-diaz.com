@@ -41,7 +41,7 @@ if ($_GET["val"] && is_adminer_ajax()) {
 		$as = convert_field($fields[key($row)]);
 		$select = array($as ? $as : idf_escape(key($row)));
 		$where[] = where_check($unique_idf, $fields);
-		$return = $driver->select($TABLE, $select, $where, $select, array(), 1, 0);
+		$return = $driver->select($TABLE, $select, $where, $select);
 		if ($return) {
 			echo reset($return->fetch_row());
 		}
@@ -52,7 +52,11 @@ if ($_GET["val"] && is_adminer_ajax()) {
 if ($_POST && !$error) {
 	$where_check = $where;
 	if (!$_POST["all"] && is_array($_POST["check"])) {
-		$where_check[] = "((" . implode(") OR (", array_map('where_check', $_POST["check"])) . "))";
+		$checks = array();
+		foreach ($_POST["check"] as $check) {
+			$checks[] = where_check($check, $fields);
+		}
+		$where_check[] = "((" . implode(") OR (", $checks) . "))";
 	}
 	$where_check = ($where_check ? "\nWHERE " . implode(" AND ", $where_check) : "");
 	$primary = $unselected = null;
@@ -138,8 +142,12 @@ if ($_POST && !$error) {
 					$message = lang('Item%s has been inserted.', " $last_id");
 				}
 			}
-			queries_redirect(remove_from_uri($_POST["all"] && $_POST["delete"] ? "page" : ""), $message, $result);
-			//! display edit page in case of an error
+			queries_adminer_redirect(remove_from_uri($_POST["all"] && $_POST["delete"] ? "page" : ""), $message, $result);
+			if (!$_POST["delete"]) {
+				edit_form($TABLE, $fields, (array) $_POST["fields"], !$_POST["clone"]);
+				page_footer();
+				exit;
+			}
 
 		} elseif (!$_POST["import"]) { // modify
 			if (!$_POST["val"]) {
@@ -165,7 +173,7 @@ if ($_POST && !$error) {
 					}
 					$affected += $connection->affected_rows;
 				}
-				queries_redirect(remove_from_uri(), lang('%d item(s) have been affected.', $affected), $result);
+				queries_adminer_redirect(remove_from_uri(), lang('%d item(s) have been affected.', $affected), $result);
 			}
 
 		} elseif (!is_string($file = get_file("csv_file", true))) {
@@ -199,8 +207,8 @@ if ($_POST && !$error) {
 			if ($result) {
 				$driver->commit();
 			}
-			queries_redirect(remove_from_uri("page"), lang('%d row(s) have been imported.', $affected), $result);
-			$driver->rollback(); // after queries_redirect() to not overwrite error
+			queries_adminer_redirect(remove_from_uri("page"), lang('%d row(s) have been imported.', $affected), $result);
+			$driver->rollback(); // after queries_adminer_redirect() to not overwrite error
 
 		}
 	}
@@ -312,7 +320,7 @@ if (!$columns && support("table")) {
 						echo "<span class='column hidden'>";
 						echo "<a href='" . h($href . $desc) . "' title='" . lang('descending') . "' class='text'> ↓</a>";
 						if (!$val["fun"]) {
-							echo '<a href="#fieldset-search" onclick="selectSearch(\'' . h(js_adminer_escape($key)) . '\'); return false;" title="' . lang('Search') . '" class="text jsonly"> =</a>';
+							echo '<a href="#fieldset-search" onclick="selectSearch(\'' . h(is_adminer_escape($key)) . '\'); return false;" title="' . lang('Search') . '" class="text jsonly"> =</a>';
 						}
 						echo "</span>";
 					}
@@ -357,7 +365,7 @@ if (!$columns && support("table")) {
 					}
 					$unique_idf .= "&" . ($val !== null ? urlencode("where[" . bracket_escape($key) . "]") . "=" . urlencode($val) : "null%5B%5D=" . urlencode($key));
 				}
-				echo "<tr" . odd() . ">" . (!$group && $select ? "" : "<td>" . checkbox("check[]", substr($unique_idf, 1), in_array(substr($unique_idf, 1), (array) $_POST["check"]), "", "this.form['all'].checked = false; formUncheck('all-page');") . ($is_group || information_schema(DB) ? "" : " <a href='" . h(ME . "edit=" . urlencode($TABLE) . $unique_idf) . "'>" . lang('edit') . "</a>"));
+				echo "<tr" . odd() . ">" . (!$group && $select ? "" : "<td>" . adminer_checkbox("check[]", substr($unique_idf, 1), in_array(substr($unique_idf, 1), (array) $_POST["check"]), "", "this.form['all'].checked = false; formUncheck('all-page');") . ($is_group || information_schema(DB) ? "" : " <a href='" . h(ME . "edit=" . urlencode($TABLE) . $unique_idf) . "'>" . lang('edit') . "</a>"));
 
 				foreach ($row as $key => $val) {
 					if (isset($names[$key])) {
@@ -462,7 +470,7 @@ if (!$columns && support("table")) {
 						);
 					}
 					echo (($found_rows === false ? count($rows) + 1 : $found_rows - $page * $limit) > $limit
-						? ' <a href="' . h(remove_from_uri("page") . "&page=" . ($page + 1)) . '" onclick="return !selectLoadMore(this, ' . (+$limit) . ', \'' . lang('Loading') . '...\');">' . lang('Load more data') . '</a>'
+						? ' <a href="' . h(remove_from_uri("page") . "&page=" . ($page + 1)) . '" onclick="return !selectLoadMore(this, ' . (+$limit) . ', \'' . lang('Loading') . '...\');" class="loadmore">' . lang('Load more data') . '</a>'
 						: ''
 					);
 				} else {
@@ -476,7 +484,7 @@ if (!$columns && support("table")) {
 			echo "<p class='count'>\n";
 			echo ($found_rows !== false ? "(" . ($exact_count ? "" : "~ ") . lang('%d row(s)', $found_rows) . ") " : "");
 			$display_rows = ($exact_count ? "" : "~ ") . $found_rows;
-			echo checkbox("all", 1, 0, lang('whole result'), "var checked = formChecked(this, /check/); selectCount('selected', this.checked ? '$display_rows' : checked); selectCount('selected2', this.checked || !checked ? '$display_rows' : checked);") . "\n";
+			echo adminer_checkbox("all", 1, 0, lang('whole result'), "var checked = formChecked(this, /check/); selectCount('selected', this.checked ? '$display_rows' : checked); selectCount('selected2', this.checked || !checked ? '$display_rows' : checked);") . "\n";
 
 			if ($adminer->selectCommandPrint()) {
 				?>

@@ -41,7 +41,7 @@ if ($tables_views && !$error && !$_POST["search"]) {
 		}
 	}
 
-	queries_redirect(substr(ME, 0, -1), $message, $result);
+	queries_adminer_redirect(substr(ME, 0, -1), $message, $result);
 }
 
 page_header(($_GET["ns"] == "" ? lang('Database') . ": " . h(DB) : lang('Schema') . ": " . h($_GET["ns"])), $error, true);
@@ -79,7 +79,7 @@ if ($adminer->homepage()) {
 			$tables = 0;
 			foreach ($tables_list as $name => $type) {
 				$view = ($type !== null && !preg_match('~table~i', $type));
-				echo '<tr' . odd() . '><td>' . checkbox(($view ? "views[]" : "tables[]"), $name, in_array($name, $tables_views, true), "", "formUncheck('check-all');");
+				echo '<tr' . odd() . '><td>' . adminer_checkbox(($view ? "views[]" : "tables[]"), $name, in_array($name, $tables_views, true), "", "formUncheck('check-all');");
 				echo '<th>' . (support("table") || support("indexes") ? '<a href="' . h(ME) . 'table=' . urlencode($name) . '" title="' . lang('Show structure') . '">' . h($name) . '</a>' : h($name));
 				if ($view) {
 					echo '<td colspan="6"><a href="' . h(ME) . "view=" . urlencode($name) . '" title="' . lang('Alter view') . '">' . lang('View') . '</a>';
@@ -123,7 +123,7 @@ if ($adminer->homepage()) {
 					. "<input type='submit' name='check' value='" . lang('Check') . "'" . on_help("'CHECK TABLE'") . "> "
 					. "<input type='submit' name='repair' value='" . lang('Repair') . "'" . on_help("'REPAIR TABLE'") . "> "
 				: "")))
-				. (support("table") ? "<input type='submit' name='truncate' value='" . lang('Truncate') . "'" . confirm() . on_help($jush == "sqlite" ? "'DELETE'" : "'TRUNCATE" . ($jush == "pgsql" ? "'" : " TABLE'")) . "> " : "")
+				. "<input type='submit' name='truncate' value='" . lang('Truncate') . "'" . confirm() . on_help($jush == "sqlite" ? "'DELETE'" : "'TRUNCATE" . ($jush == "pgsql" ? "'" : " TABLE'")) . "> "
 				. "<input type='submit' name='drop' value='" . lang('Drop') . "'" . confirm() . on_help("'DROP TABLE'") . ">\n";
 				$databases = (support("scheme") ? $adminer->schemas() : $adminer->databases());
 				if (count($databases) != 1 && $jush != "sqlite") {
@@ -220,7 +220,7 @@ if ($adminer->homepage()) {
 		}
 
 		if ($tables_list) {
-			echo "<script type='text/javascript'>ajaxSetHtml('" . js_adminer_escape(ME) . "script=db');</script>\n";
+			echo "<script type='text/javascript'>ajaxSetHtml('" . is_adminer_escape(ME) . "script=db');</script>\n";
 		}
 	}
 }

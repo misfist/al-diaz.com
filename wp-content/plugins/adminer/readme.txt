@@ -3,8 +3,8 @@ Contributors: Bueltge, inpsyde
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6069955
 Tags: adminer, debug, sql, analyse, tuning, performance, database, queries, query, phpMyAdmin, admin, database management
 Requires at least: 2.7
-Tested up to: 3.9
-Stable tag: 1.3.0
+Tested up to: 4.1-alpha
+Stable tag: 1.3.1
 
 Adminer is a full-featured MySQL management tool written in PHP. This plugin include this tool in WordPress.
 
@@ -30,12 +30,12 @@ If you use the plugins outside the wp-root or other one install, then you must d
 	/**
 	 * The path to wp-load.php,
 	 * if you have the plugin folder not inside the default path
-	 * 
+	 *
 	 * Examples:
 	 * Linux: `'/var/www/wpbeta'`
 	 * Windows client with XAMPP: `$wp_siteurl = 'C:/xampp/htdocs/wpbeta';`
 	 */
-	$wp_siteurl = ''; 
+	$wp_siteurl = '';
 
 == Screenshots ==
 1. Page in Backend (WordPress 2.9-rare)
@@ -64,8 +64,16 @@ Good news, this plugin is free for everyone! Since it's released under the GPL, 
 The plugin comes with various translations, please refer to the [WordPress Codex](http://codex.wordpress.org/Installing_WordPress_in_Your_Language "Installing WordPress in Your Language") for more information about activating the translation. If you want to help to translate the plugin to your language, please have a look at the .pot file which contains all defintions and may be used with a [gettext](http://www.gnu.org/software/gettext/) editor like [Poedit](http://www.poedit.net/) (Windows) or plugin for WordPress [Localization](http://wordpress.org/extend/plugins/codestyling-localization/).
 
 == Changelog ==
-= v1.3.0 (01/26/2014) =
-* Fix strict php notice for static method 
+= v1.3.1 (2014-11-07) =
+* Update to Adminer Core 4.1.0, 2014-04-18
+* Enhance loader for crusome installs ;)
+* Replace another function from Adminer to work with different plugins
+* Hide password in clear text, only via Mouseover readable
+* Update style for more WP feeling since 3.8 - like no radius
+* Check, that the plugin is active for access Adminer
+
+= v1.3.0 (2014-01-26) =
+* Fix strict php notice for static method
 * Fix different views via stylesheet
 * Fix fatal error on `pagination()` function
 * Update to Adminer Core 4.0.2
@@ -107,11 +115,11 @@ The plugin comes with various translations, please refer to the [WordPress Codex
 * Test in WP 3.3-aortic-dissection
 
 = v1.0.5 (06/13/2011) =
-* maintenance: include new Adminer version 3.2.2, see [changelog](http://adminer.git.sourceforge.net/git/gitweb.cgi?p=adminer/adminer;a=blob_plain;f=changes.txt;hb=HEAD) of Adminer 
+* maintenance: include new Adminer version 3.2.2, see [changelog](http://adminer.git.sourceforge.net/git/gitweb.cgi?p=adminer/adminer;a=blob_plain;f=changes.txt;hb=HEAD) of Adminer
 * maintenance: change is_afax-fct for use with eMember plugin
 
 = v1.0.4 (03/24/2011) =
-* maintenance: include new Adminer version 3.2.1, see [changelog](http://adminer.git.sourceforge.net/git/gitweb.cgi?p=adminer/adminer;a=blob_plain;f=changes.txt;hb=HEAD) of Adminer 
+* maintenance: include new Adminer version 3.2.1, see [changelog](http://adminer.git.sourceforge.net/git/gitweb.cgi?p=adminer/adminer;a=blob_plain;f=changes.txt;hb=HEAD) of Adminer
 * maintenance: change readme
 
 = v1.0.3 (02/02/2011) =
@@ -125,11 +133,11 @@ The plugin comes with various translations, please refer to the [WordPress Codex
 * maintenance: change stable tag in readme.txt to trunk; all versions if this plugin is/was stable ;)
 
 = v1.0.1 (10/18/2010) =
-* maintenance: include Adminer version 3.0.1, see [changelog](http://adminer.git.sourceforge.net/git/gitweb.cgi?p=adminer/adminer;a=blob_plain;f=changes.txt;hb=HEAD) of Adminer 
+* maintenance: include Adminer version 3.0.1, see [changelog](http://adminer.git.sourceforge.net/git/gitweb.cgi?p=adminer/adminer;a=blob_plain;f=changes.txt;hb=HEAD) of Adminer
 * maintenance: changes on stylesheet
 
 = v1.0.0 (10/16/2010) =
-* maintenance: include Adminer Version 3.0.0, see [changelog](http://adminer.git.sourceforge.net/git/gitweb.cgi?p=adminer/adminer;a=blob_plain;f=changes.txt;hb=HEAD) of Adminer 
+* maintenance: include Adminer Version 3.0.0, see [changelog](http://adminer.git.sourceforge.net/git/gitweb.cgi?p=adminer/adminer;a=blob_plain;f=changes.txt;hb=HEAD) of Adminer
 * maintenance: changes on stylesheet
 * release stable release 1.0.0
 
