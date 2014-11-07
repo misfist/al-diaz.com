@@ -69,7 +69,7 @@ class W3_ConfigData {
      *
      * @param string $key
      * @param string $value
-     * @return value set
+     * @return mixed value set
      */
     function set($key, $value) {
         if (!array_key_exists($key, $this->_keys))
@@ -111,14 +111,29 @@ class W3_ConfigData {
      * Reads config from file and returns it's content as array (or null)
      *
      * @param string $filename
+     * @param bool $unserialize
      * @return array or null
      */
-    function get_array_from_file($filename) {
+    static function get_array_from_file($filename, $unserialize = false) {
 
         if (file_exists($filename) && is_readable($filename)) {
             // include errors not hidden by @ since they still terminate
-            // process (code not functonal), but hides reason why
-            $config = include $filename;
+            // process (code not functional), but hides reason why
+            if ($unserialize) {
+                $content = file_get_contents($filename);
+                $content = substr($content, 13);
+                $config = @unserialize($content);
+                if (!$config)
+                    return null;
+            } else {
+                /** @var $filename array */
+                // including file directly instead of read+eval causes constant
+                // problems with APC, ZendCache, and WSOD in a case of
+                // broken config file, still doesnt affect runtime since 
+                // config cache is used
+                $content = @file_get_contents($filename);
+                $config = @eval(substr($content, 5));
+            }
 
             if (is_array($config)) {
                 return $config;
@@ -132,10 +147,11 @@ class W3_ConfigData {
      * Reads config from file using "set" method to fill object with data.
      *
      * @param string $filename
+     * @param bool $unserialize
      * @return boolean
      */
-    function read($filename) {
-        $config = $this->get_array_from_file($filename);
+    function read($filename, $unserialize = false) {
+        $config = W3_ConfigData::get_array_from_file($filename, $unserialize);
         if (is_null($config))
             return false;
         
@@ -148,109 +164,13 @@ class W3_ConfigData {
     /**
      * Saves modified config
      */
-    function write($filename) {
-        $config = "<?php\r\n\r\nreturn array(\r\n";
-        foreach ($this->data as $key => $value)
-            $config .= $this->_write_item(1, $key, $value);
-        $config .= ");";
-        return @$this->file_put_contents_atomic($filename, $config);
-    }
-    
-    
-    /**
-     * Writes array item to file
-     *
-     * @param int $tabs
-     * @param string $key
-     * @param mixed $value
-     * @return string
-     */
-    private function _write_item($tabs, $key, $value) {
-        $item = str_repeat("\t", $tabs);
-
-        if (is_numeric($key) && (string)(int)$key === (string)$key) {
-            $item .= sprintf("%d => ", $key);
+    function write($filename, $serialize = false) {
+        w3_require_once(W3TC_INC_DIR . '/functions/file.php');
+        if ($serialize) {
+            $config = '<?php exit;?>' . serialize($this->data);
         } else {
-            $item .= sprintf("'%s' => ", addcslashes($key, "'\\"));
+            $config = w3tc_format_data_as_settings_file($this->data);
         }
-
-        switch (gettype($value)) {
-            case 'object':
-            case 'array':
-                $item .= "array(\r\n";
-                foreach ((array)$value as $k => $v) {
-                    $item .= $this->_write_item($tabs + 1, $k, $v);
-                }
-                $item .= sprintf("%s),\r\n", str_repeat("\t", $tabs));
-                return $item;
-
-            case 'integer':
-                $data = (string)$value;
-                break;
-
-            case 'double':
-                $data = (string)$value;
-                break;
-
-            case 'boolean':
-                $data = ($value ? 'true' : 'false');
-                break;
-
-            case 'NULL':
-                $data = 'null';
-                break;
-
-            default:
-            case 'string':
-                $data = "'" . addcslashes($value, "'\\") . "'";
-                break;
-        }
-
-        $item .= $data . ",\r\n";
-
-        return $item;
-    }
-
-    /**
-     * @param $filename
-     * @param $content
-     * @return bool
-     */
-    function file_put_contents_atomic($filename, $content) {
-        if (is_dir(W3TC_CACHE_TMP_DIR) && is_writable(W3TC_CACHE_TMP_DIR)) {
-            $temp = tempnam(W3TC_CACHE_TMP_DIR, 'temp');
-        } else {
-            trigger_error("file_put_contents_atomic() : error writing temporary file to '" . W3TC_CACHE_TMP_DIR . "'", E_USER_WARNING);
-            return false;
-        }
-
-        $chmod = 0644;
-        if (defined('FS_CHMOD_FILE'))
-            $chmod = FS_CHMOD_FILE;
-        @chmod($temp, $chmod);
-
-        if (!($f = @fopen($temp, 'wb'))) {
-            if (file_exists($temp))
-                @unlink($temp);
-           trigger_error("file_put_contents_atomic() : error writing temporary file '$temp'", E_USER_WARNING);
-           return false;
-        }
-
-        fwrite($f, $content);
-        fclose($f);
-
-        if (!@rename($temp, $filename)) {
-            @unlink($filename);
-            @rename($temp, $filename);
-        }
-
-        if (file_exists($temp))
-            @unlink($temp);
-
-        $chmod = 0644;
-        if (defined('FS_CHMOD_FILE'))
-            $chmod = FS_CHMOD_FILE;
-        @chmod($filename, $chmod);
-        return true;
+        w3_file_put_contents_atomic($filename, $config);
     }
 }

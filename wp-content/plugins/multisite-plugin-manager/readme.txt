@@ -2,9 +2,9 @@
 Contributors: uglyrobot
 Tags: multisite, wpmu, plugins
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=W66QWST9B9KRN
-Requires at least: 3.1
-Tested up to: 3.4.2
-Stable tag: trunk
+Requires at least: 3.7.3
+Tested up to: 3.9
+Stable tag: 3.1.4
 
 The essential plugin for every multisite install! Manage plugin access permissions across your entire multisite network.
 
@@ -22,6 +22,8 @@ Previously known as **WPMU Plugin Manager**, it uses a backend options page to a
 Also, if you use the excellent <a href="http://premium.wpmudev.org/project/pro-sites">Pro Sites plugin from WPMU DEV</a> you will be able to charge for access to certain plugins!
 
 A free plugin by Aaron Edwards of <a href="http://uglyrobot.com/">UglyRobot Web Development</a>.
+
+<a href="https://github.com/uglyrobot/multisite-plugin-manager">Contribute on GitHub</a>
 
 == Installation ==
 = To Install: =
@@ -50,7 +52,9 @@ A free plugin by Aaron Edwards of <a href="http://uglyrobot.com/">UglyRobot Web 
 No, this plugin is only compatible (and useful) with Multisite installs.
 
 = Do I need the Pro Sites plugin installed? =
-Not at all, but if you install the <a href="http://premium.wpmudev.org/project/pro-sites">Pro Sites plugin from WPMU DEV</a> the options to charge for access to certain plugins will appear in the dropdowns.
+Not at all, but if you install the <a href="http://premium.wpmudev.org/project/pro-sites/">Pro Sites plugin from WPMU DEV</a> the options to charge for access to certain plugins will appear in the dropdowns.
+
+<a href="https://github.com/uglyrobot/multisite-plugin-manager">Contribute on GitHub</a>
 
 == Screenshots ==
 
@@ -58,6 +62,13 @@ Not at all, but if you install the <a href="http://premium.wpmudev.org/project/p
 2. Overriding allowed plugins per site
 
 == Changelog ==
+
+= 3.1.4 =
+* Fix: Fatal error: Call to undefined function wp_get_current_user() while activating plugins
+
+= 3.1.3 =
+* Fix: PHP warnings for some auto-activate plugins on new blog creation
+* New: Prevent running mass activate/deactivate routines in large networks
 
 = 3.1.2 =
 * Important reflected cross-site scripting vulnerability fix! Props Matthew Fuller @Mozilla 

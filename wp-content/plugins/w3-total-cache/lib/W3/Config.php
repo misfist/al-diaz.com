@@ -19,10 +19,12 @@ class W3_Config extends W3_ConfigBase {
      */
     private $_preview;
 
+    private $_md5 = null;
+
     /**
      * Constructor
      */
-    function __construct($master = false) {
+    function __construct($master = false, $blog_id = null) {
         $preview = w3_is_preview_mode();
         if (defined('WP_ADMIN')) {
             $config_admin = w3_instance('W3_ConfigAdmin');
@@ -30,8 +32,10 @@ class W3_Config extends W3_ConfigBase {
         }
         if ($master)
             $this->_blog_id = 0;
-        else
+        elseif ($blog_id == null)
             $this->_blog_id = w3_get_blog_id();
+        else
+            $this->_blog_id = $blog_id;
         $this->_preview = $preview;
         $this->load();
     }
@@ -48,7 +52,7 @@ class W3_Config extends W3_ConfigBase {
      *
      * @param string $key
      * @param string $value
-     * @return value set
+     * @return mixed value set
      */
     function set($key, $value) {
         $key = $this->_get_writer()->resolve_http_key($key);
@@ -97,11 +101,21 @@ class W3_Config extends W3_ConfigBase {
     
     /**
      * Loads config
+     * @param bool $generate_admin_cache generates a cached config even in admin
      */
-    function load() {
+    function load($generate_admin_cache = false) {
         $filename = $this->_get_config_filename();
-        if (!$this->_read($filename))
-            $this->_data = $this->_get_writer()->create_compiled_config($filename);
+        // dont use cache in admin - may load some old cache when real config
+        // contains different state (even manually edited)
+        if (!defined('WP_ADMIN')) {
+            $data = $this->_read($filename);
+            if (!is_null($data)) {
+                $this->_data = $data;
+                return;
+            }
+        }
+
+        $this->_data = $this->_get_writer()->create_compiled_config($filename, $generate_admin_cache || !defined('WP_ADMIN'));
     }
 
     /**
@@ -110,7 +124,13 @@ class W3_Config extends W3_ConfigBase {
      * @return string
      */
     function export() {
-        return file_get_contents($this->_get_config_filename());
+        $this->refresh_cache(true);
+        w3_require_once(W3TC_INC_DIR . '/functions/file.php');
+        $content = file_get_contents($this->_get_config_filename());
+        $content = substr($content,13);
+        $data = unserialize($content);
+        $settings = w3tc_format_data_as_settings_file($data);
+        return $settings;
     }
 
     /**
@@ -145,15 +165,47 @@ class W3_Config extends W3_ConfigBase {
     function is_master() {
         return ($this->_blog_id <= 0);
     }
-    
+
+    /**
+     * Checks if cache file is actual
+     * @throws Exception
+     */
+    function validate_cache_actual() {
+        $filename = $this->_get_config_filename();
+
+        if (!file_exists($filename))
+            return;
+
+        $data = $this->_read($filename);
+        if (is_null($data))
+            throw new Exception('Can\'t read file <strong>' .
+                $filename . '</strong>. Remove it manually.');
+
+        $stale_data = array();
+        if (false !== $data) {
+            foreach ($this->_data as $key => $value) {
+                if (!isset($data[$key]) || $value != $data[$key]) {
+                    $stale_data[$key] = $value;
+                }
+            }
+        }
+        if ($stale_data) {
+            set_transient('w3tc_new_settings', $stale_data);
+            throw new SelfTestExceptions('Cache file <strong>' .
+            $filename . '</strong> can\'t be actualized. ' .
+            'Remove it manually.');
+        }
+    }
+
     /**
      * Flushes the cache and rebuilds it from scratch
      *
+     * @param bool $force_refresh
      * @return void
      */
-    function refresh_cache() {
+    function refresh_cache($force_refresh = false) {
         $this->_flush_cache();
-        $this->load();
+        $this->load($force_refresh);
     }
 
     /**
@@ -197,6 +249,12 @@ class W3_Config extends W3_ConfigBase {
         return $value;
     }
 
+    function get_md5() {
+        if (is_null($this->_md5))
+            $this->_md5 = substr(md5(serialize($this->_data)), 20);
+        return $this->_md5;
+    }
+
     /**
      * Reads config from file
      *
@@ -205,22 +263,21 @@ class W3_Config extends W3_ConfigBase {
      */
     private function _read($filename) {
         if (file_exists($filename) && is_readable($filename)) {
-            // include errors not hidden by @ since they still terminate
-            // process (code not functonal), but hides reason why
-            $config = include $filename;
-            
+            $content = file_get_contents($filename);
+            $content = substr($content,13);
+            $config = @unserialize($content);
             if (is_array($config)) {
-                if (isset($config['version']) 
+                if (isset($config['version'])
                         && $config['version'] == W3TC_VERSION) {
-                    $this->_data = $config;
-                    return true;
+                    return $config;
                 }
             }
         }
-        return false;
+        return null;
     }
     
     private function _flush_cache($forced_preview = null) {
+        $this->_md5 = null;
         if ($this->_blog_id > 0)
             @unlink($this->_get_config_filename($forced_preview));
         else {
@@ -235,11 +292,11 @@ class W3_Config extends W3_ConfigBase {
      * 
      * @return string
      */
-    private function _get_config_filename($forced_preview = null) {
+    private function _get_config_filename($forced_preview = null, $master = false) {
         $preview = (is_null($forced_preview) ? $this->_preview : $forced_preview);
         $postfix = ($preview ? '-preview' : '') . '.php';
 
-        if ($this->_blog_id <= 0 || w3_force_master())
+        if ($this->_blog_id <= 0 || w3_force_master() || $master)
             return W3TC_CACHE_CONFIG_DIR . '/master' . $postfix;
 
         return W3TC_CACHE_CONFIG_DIR . '/' . 

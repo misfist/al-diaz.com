@@ -149,12 +149,6 @@ class W3_Cdn_Base {
                     $domain = $domains[0];
                     break;
 
-                /**
-                 * Reserved JS in head
-                 */
-                case (isset($domains[1]) && $this->_is_js($path)):
-                    $domain = $domains[1];
-                    break;
 
                 /**
                  * Reserved JS after body
@@ -168,6 +162,13 @@ class W3_Cdn_Base {
                  */
                 case (isset($domains[3]) && $this->_is_js_footer($path)):
                     $domain = $domains[3];
+                    break;
+
+                /**
+                 * Reserved JS in head, moved here due to greedy regex
+                 */
+                case (isset($domains[1]) && $this->_is_js($path)):
+                    $domain = $domains[1];
                     break;
 
                 default:
@@ -229,6 +230,7 @@ class W3_Cdn_Base {
      * Formats URL
      *
      * @param string $path
+	 * @return string
      */
     function format_url($path) {
         $url = $this->_format_url($path);
@@ -352,7 +354,7 @@ class W3_Cdn_Base {
      * @param array $file CDN file array
      * @return array
      */
-    function _get_headers($file) {
+    function _get_headers($file, $block_expires = false) {
         w3_require_once(W3TC_INC_DIR . '/functions/mime.php');
         $local_path = $file['local_path'];
         $mime_type = w3_get_mime_type($local_path);
@@ -376,8 +378,12 @@ class W3_Cdn_Base {
                 $headers['X-Powered-By'] = W3TC_POWERED_BY;
             }
 
-            if ($this->cache_config[$mime_type]['expires']) {
-                $headers['Expires'] = w3_http_date(time() + $this->cache_config[$mime_type]['lifetime']);
+            
+            $expires_set = false;
+            if (!$block_expires && $this->cache_config[$mime_type]['expires']) {
+                $headers['Expires'] = w3_http_date(time() + 
+                    $this->cache_config[$mime_type]['lifetime']);
+                $expires_set = true;
             }
 
             switch ($this->cache_config[$mime_type]['cache_control']) {
@@ -391,7 +397,7 @@ class W3_Cdn_Base {
                 case 'cache_public_maxage':
                     $headers = array_merge($headers, array(
                         'Pragma' => 'public',
-                        'Cache-Control' => ($this->cache_config[$mime_type]['expires'] ? '' : 'max-age=' . $this->cache_config[$mime_type]['lifetime'] .', ') . 'public'
+                        'Cache-Control' => ($expires_set ? '' : 'max-age=' . $this->cache_config[$mime_type]['lifetime'] .', ') . 'public'
                     ));
                     break;
 
@@ -405,14 +411,14 @@ class W3_Cdn_Base {
                 case 'cache_noproxy':
                     $headers = array_merge($headers, array(
                         'Pragma' => 'public',
-                        'Cache-Control' => 'public, must-revalidate'
+                        'Cache-Control' => 'private, must-revalidate'
                     ));
                     break;
 
                 case 'cache_maxage':
                     $headers = array_merge($headers, array(
                         'Pragma' => 'public',
-                        'Cache-Control' => ($this->cache_config[$mime_type]['expires'] ? '' : 'max-age=' . $this->cache_config[$mime_type]['lifetime'] .', ') . 'public, must-revalidate, proxy-revalidate'
+                        'Cache-Control' => ($expires_set ? '' : 'max-age=' . $this->cache_config[$mime_type]['lifetime'] .', ') . 'public, must-revalidate, proxy-revalidate'
                     ));
                     break;
 
@@ -502,7 +508,7 @@ class W3_Cdn_Base {
      * @return boolean
      */
     function _is_css($path) {
-        return preg_match('~[a-z0-9\-_]+\.include\.[0-9]+\.css$~', $path);
+        return preg_match('~[a-zA-Z0-9\-_]*(\.include\.[0-9]+)?\.css$~', $path);
     }
 
     /**
@@ -512,7 +518,8 @@ class W3_Cdn_Base {
      * @return boolean
      */
     function _is_js($path) {
-        return preg_match('~[a-z0-9\-_]+\.include\.[a-z0-9]+\.js$~', $path);
+        return preg_match('~([a-z0-9\-_]+(\.include\.[a-z0-9]+)\.js)$~', $path) ||
+        preg_match('~[\w\d\-_]+\.js~', $path);
     }
 
     /**
@@ -522,7 +529,7 @@ class W3_Cdn_Base {
      * @return boolean
      */
     function _is_js_body($path) {
-        return preg_match('~[a-z0-9\-_]+\.include-body\.[a-z0-9]+\.js$~', $path);
+        return preg_match('~[a-z0-9\-_]+(\.include-body\.[a-z0-9]+)\.js$~', $path);
     }
 
     /**
@@ -532,7 +539,7 @@ class W3_Cdn_Base {
      * @return boolean
      */
     function _is_js_footer($path) {
-        return preg_match('~[a-z0-9\-_]+\.include-footer\.[a-z0-9]+\.js$~', $path);
+        return preg_match('~[a-z0-9\-_]+(\.include-footer\.[a-z0-9]+)\.js$~', $path);
     }
 
     /**

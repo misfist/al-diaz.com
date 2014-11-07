@@ -279,3 +279,125 @@ function w3_get_file_owner($file = '') {
     }
     return $fileowner . ':' . $filegroup;
 }
+
+/**
+ * Atomically writes file inside W3TC_CACHE_DIR dir
+ * @param $filename
+ * @param $content
+ * @throws Exception
+ * @return void
+ **/
+function w3_file_put_contents_atomic($filename, $content) {
+    if (!is_dir(W3TC_CACHE_TMP_DIR) || !is_writable(W3TC_CACHE_TMP_DIR)) {
+        w3_mkdir_from(W3TC_CACHE_TMP_DIR, W3TC_CACHE_DIR);
+
+        if (!is_dir(W3TC_CACHE_TMP_DIR) || !is_writable(W3TC_CACHE_TMP_DIR)) {
+            throw new Exception('Can\'t create folder <strong>' .
+                W3TC_CACHE_TMP_DIR . '</strong>');
+        }
+    }
+
+    $temp = tempnam(W3TC_CACHE_TMP_DIR, 'temp');
+
+    try {
+        if (!($f = @fopen($temp, 'wb'))) {
+            if (file_exists($temp))
+                @unlink($temp);
+           throw new Exception('Can\'t write to temporary file <strong>' .
+                    $temp . '</strong>');
+        }
+
+        fwrite($f, $content);
+        fclose($f);
+
+        if (!@rename($temp, $filename)) {
+            @unlink($filename);
+            if (!@rename($temp, $filename)) {
+                w3_mkdir_from(dirname($filename), W3TC_CACHE_DIR);
+                if (!@rename($temp, $filename)) {
+                    throw new Exception('Can\'t write to file <strong>' .
+                        $filename . '</strong>');
+                }
+            }
+        }
+
+        $chmod = 0644;
+        if (defined('FS_CHMOD_FILE'))
+            $chmod = FS_CHMOD_FILE;
+        @chmod($filename, $chmod);
+    } catch (Exception $ex) {
+        if (file_exists($temp))
+            @unlink($temp);
+        throw $ex;
+    }
+}
+
+
+/**
+ * Takes a W3TC settings array and formats it to a PHP String
+ * @param $data
+ * @return string
+ */
+function w3tc_format_data_as_settings_file($data) {
+    $config = "<?php\r\n\r\nreturn array(\r\n";
+    foreach ($data as $key => $value)
+        $config .= w3tc_format_array_entry_as_settings_file_entry(1, $key, $value);
+    $config .= ");";
+    return $config;
+}
+
+
+/**
+ * Writes array item to file
+ *
+ * @param int $tabs
+ * @param string $key
+ * @param mixed $value
+ * @return string
+ */
+function w3tc_format_array_entry_as_settings_file_entry($tabs, $key, $value) {
+    $item = str_repeat("\t", $tabs);
+
+    if (is_numeric($key) && (string)(int)$key === (string)$key) {
+        $item .= sprintf("%d => ", $key);
+    } else {
+        $item .= sprintf("'%s' => ", addcslashes($key, "'\\"));
+    }
+
+    switch (gettype($value)) {
+        case 'object':
+        case 'array':
+            $item .= "array(\r\n";
+            foreach ((array)$value as $k => $v) {
+                $item .= w3tc_format_array_entry_as_settings_file_entry($tabs + 1, $k, $v);
+            }
+            $item .= sprintf("%s),\r\n", str_repeat("\t", $tabs));
+            return $item;
+
+        case 'integer':
+            $data = (string)$value;
+            break;
+
+        case 'double':
+            $data = (string)$value;
+            break;
+
+        case 'boolean':
+            $data = ($value ? 'true' : 'false');
+            break;
+
+        case 'NULL':
+            $data = 'null';
+            break;
+
+        default:
+        case 'string':
+            $data = "'" . addcslashes($value, "'\\") . "'";
+            break;
+    }
+
+    $item .= $data . ",\r\n";
+
+    return $item;
+}
+

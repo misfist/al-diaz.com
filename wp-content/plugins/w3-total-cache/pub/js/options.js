@@ -115,6 +115,129 @@ function w3tc_minify_css_theme(theme) {
     w3tc_minify_css_file_clear();
 }
 
+function w3tc_minify_filename_test(url, success, failure) {
+    var timestamp = new Date().getTime();
+    jQuery.get(url + '?t=' + timestamp, function (data) {
+        success(data, url);
+    })
+    .fail(function (data) {
+        failure(data, url);
+    });
+}
+function w3tc_minify_filename_test_once(url, filename) {
+    jQuery(function($) {
+        w3tc_minify_filename_test(url + filename + '.css',
+            function(data, url) {
+                if (data == 'retry') {
+                    $.get(url, function(data2) {
+                        if (data2 != 'content ok') {
+                            $('#minify_auto_error').show();
+                            w3tc_start_minify_try_solve();
+                        } else {
+                            $.get(ajaxurl, {action:'w3tc_minify_disable_filename_test'});
+                        }
+                    });
+                } else if (data != 'content ok') {
+                    $('#minify_auto_error').show();
+                    w3tc_start_minify_try_solve();
+                } else {
+                    $.get(ajaxurl, {action:'w3tc_minify_disable_filename_test'});
+                }
+            },
+            function (data, url) {
+                $('#minify_auto_error').show();
+                w3tc_start_minify_try_solve();
+            }
+        );
+    })
+}
+
+function w3tc_filename_auto_solve(testUrl) {
+    var minLength = 100, maxLength = 246;
+    jQuery('#minify_auto_test_loading').toggleClass('minify_auto_test');
+    w3tc_do_filename_auto_step(testUrl,minLength, maxLength, maxLength, false);
+}
+
+function w3tc_do_filename_auto_step(testUrl,minLength, maxLength, tryLength, minTestedAndSuccessful) {
+    tryLength = Math.floor(tryLength);
+    var testString = new Array(tryLength+1).join('X');
+    var timestamp = new Date().getTime();
+    var url = testUrl + testString + '.css' + '?t=' + timestamp;
+    jQuery.get(url, function (data) {
+        if (data == 'retry') {
+            jQuery.get(url, function (retryResult) {
+                if (retryResult == 'content ok') {
+                    w3tc_do_success(testUrl,minLength, maxLength, tryLength, minTestedAndSuccessful);
+                } else {
+                    jQuery.get(ajaxurl, {action:'w3tc_minify_disable_filename_test'});
+                    alert('Plugin could not solve the Minify Auto issue automatically.');
+                    jQuery('#minify_auto_test_loading').toggleClass('minify_auto_test');
+                    jQuery('#minify_auto_error').html('<p>Minify Auto does not work properly. Try using Minify Manual instead ' +
+                        'or try another  Minify cache method.</p>');
+                }
+            });
+        } else if (data == 'content ok') {
+            w3tc_do_success(testUrl,minLength, maxLength, tryLength, minTestedAndSuccessful);
+        } else {
+            w3tc_do_failure(testUrl,minLength, maxLength, tryLength, minTestedAndSuccessful);
+        }
+    }).fail(function (data) {
+            w3tc_do_failure(testUrl,minLength, maxLength, tryLength, minTestedAndSuccessful);
+    });
+}
+
+function w3tc_do_success(testUrl,minLength, maxLength, tryLength, minTestedAndSuccessful) {
+    if ((maxLength - tryLength) < 10) {
+        w3tc_finish_with(tryLength);
+        return;
+    }
+    w3tc_do_filename_auto_step(testUrl, tryLength, maxLength, (tryLength + maxLength) / 2, true);
+}
+
+function w3tc_do_failure(testUrl,minLength, maxLength, tryLength, minTestedAndSuccessful) {
+    if ((tryLength - minLength) < 10) {
+        if (minTestedAndSuccessful) {
+            w3tc_finish_with(minLength);
+            return;
+        } else    if (tryLength <= minLength) {
+            jQuery.get(ajaxurl, {action:'w3tc_minify_disable_filename_test'});
+            var url;
+            if (w3_use_network_link)
+                url = 'network/admin.php?page=w3tc_minify#advanced';
+            else
+                url = 'admin.php?page=w3tc_minify#advanced';
+
+            alert('Plugin could not solve the Minify Auto issue automatically.');
+            jQuery('#minify_auto_test_loading').toggleClass('minify_auto_test');
+            jQuery('#minify_auto_error').html('<p>Minify Auto does not work properly. Try using Minify Manual instead ' +
+                'or try another Minify cache method. You can also try a lower filename length value manually on ' +
+                '<a href="' + url + '">settings page</a> by checking "Disable the Minify Auto automatic filename test" </p>');
+            return;
+        }
+        else {
+            w3tc_do_filename_auto_step(testUrl,minLength, maxLength, minLength, false);
+            return;
+        }
+    }
+    w3tc_do_filename_auto_step(testUrl, minLength, maxLength, (tryLength + minLength) / 2, minTestedAndSuccessful);
+}
+
+function w3tc_finish_with(length) {
+    jQuery.get(ajaxurl, {action:'w3tc_minify_change_filename_length', maxlength: length}, function (changeResult) {
+        if (changeResult == 1) {
+            jQuery('#minify_auto_filename_length').val(length);
+            jQuery('#minify_auto_test_loading').toggleClass('minify_auto_test');
+            alert('Minify Auto filename length changed too ' + length);
+            jQuery('#minify_auto_error').hide();
+        } else {
+            jQuery('#minify_auto_test_loading').toggleClass('minify_auto_test');
+            alert('Tried to change Minify Auto filename length too ' + length + ' but failed.');
+            jQuery('#minify_auto_error').hide();
+        }
+    });
+
+}
+
 function w3tc_cdn_get_cnames() {
     var cnames = [];
 
@@ -199,12 +322,12 @@ function w3tc_cloudflare_api_request(action, value, nonce) {
         return false;
     }
 
-    jQuery.post('admin.php?page=w3tc_general', {
-        w3tc_cloudflare_api_request: 1,
+    jQuery.post(ajaxurl, {
+        action:'w3tc_cloudflare_api_request',
         email: email.val(),
         key: key.val(),
         zone: zone.val(),
-        action: action,
+        command: action,
         value: value,
         _wpnonce: nonce
     }, function(data) {
@@ -254,7 +377,7 @@ function w3tc_toggle(name, check) {
 }
 
 function w3tc_toggle2(name, dependent_ids) {
-    var id = '#' + name, dependants = '';
+    var id = '#' + name, dependants = '', n;
     for (n = 0; n < dependent_ids.length; n++)
         dependants += (n > 0 ? ',' : '') + '#' + dependent_ids[n];
     
@@ -299,6 +422,162 @@ function w3tc_beforeunload() {
     return 'Navigate away from this page without saving your changes?';
 }
 
+var setting_changes = null;
+function w3tc_change_setting(key, state,network) {
+    var class_id = key.replace(/\./g, '_');
+    if (setting_changes == null)
+        setting_changes = jQuery('.setting_changes').length;
+    setting_changes--;
+    jQuery.post(ajaxurl,{action:'w3tc_change_setting', setting:key, state:state, network:network}, function(data) {
+        if (data == 'failure') {
+            alert('Could not change the configuration setting.')
+        } else {
+            if ('done' == data && 'all' == key) {
+                jQuery('#w3tc_new_settings').html('<p>All setting changes have been applied.</p>');
+            } else if ('done' == data) {
+                jQuery('li.'+class_id).html('<span>Action Applied</span>');
+                jQuery('li.'+class_id+' span').fadeOut(2000, function() {
+                    jQuery('li.'+class_id).remove();
+                    jQuery('#w3tc_new_settings').html('<p>All setting changes have been applied.</p>');
+                });
+            } else {
+                jQuery('li.'+class_id).html('<span>Action Applied</span>');
+                jQuery('li.'+class_id+' span').fadeOut(2000, function() {
+                    jQuery('li.'+class_id).remove();
+                });
+                if (setting_changes <= 0)
+                    jQuery('#w3tc_new_settings').html('<p>All setting changes have been applied.</p>');
+            }
+        }
+    });
+}
+
+/**
+ *
+ * @param type
+ * @param nonce
+ */
+function w3tc_validate_cdn_key_result(type, nonce) {
+  var key = jQuery('#cdn_' + type + '_authorization_key').val();
+  jQuery('#cdn_result_message').text('');
+  var result = jQuery('#validate_cdn_key_result');
+  if (key.length == 0) {
+    result.html('').removeClass('w3tc-error').removeClass('w3tc-success').removeClass('w3tc-checking');
+    return;
+  }
+  result.html('Validating ...').addClass('w3tc-checking');
+
+  if (key.split('+').length!=3) {
+    result.removeClass('w3tc-checking');
+    result.html('Key is invalid').addClass('w3tc-error');
+    return;
+  }
+  var params = {
+    w3tc_cdn_validate_authorization_key: 1,
+    type: type,
+    authorization_key: key,
+    _wpnonce: nonce
+  };
+  jQuery('#validate_cdn_key').prop('disabled', true);
+  jQuery.post('admin.php?page=w3tc_dashboard', params, function(data) {
+    result.html('').removeClass('w3tc-error').removeClass('w3tc-success').removeClass('w3tc-checking');
+    var element;
+    if (data.result == 'create') {
+      jQuery('#create_zone_area').show();
+      element = jQuery('#normal-sortables');
+      if (element.length)
+        element.masonry('reload');
+    } else if (data.result == 'single') {
+      var message = data.cnames.join('<br />');
+      jQuery('#cdn_result_message').html('Preexisting zone has been selected and saved for the CDN engine. Hostnames used: <br />' + message);
+      jQuery('#cdn_cnames > :first-child > :first-child').val(data.cnames.shift());
+      for (var i in data.cnames) {
+        jQuery('#cdn_cnames').append('<li><input type="text" name="cdn_cnames[]" value="' + data.cnames[i] + '" size="60" /> <input class="button cdn_cname_delete" type="button" value="Delete" /> <span></span></li>');
+        w3tc_cdn_cnames_assign();
+      }
+    } else if (data.result == 'many') {
+      jQuery('#select_pull_zone').show();
+      var mySelect = jQuery('#cdn_' + type +'_zone_id');
+      mySelect.empty();
+      jQuery.each(data.zones, function(val, zone) {
+        mySelect.append(
+          jQuery('<option></option>').val(zone.id).html(zone.name)
+        );
+      });
+      if (data.data.id) {
+        jQuery("#cdn_maxcdn_zone_id").val(data.data.id);
+        var message = data.data.cnames.join('<br />');
+        jQuery('#cdn_result_message').html('Preexisting zone has been selected and saved for the CDN engine. Hostnames used: <br />' + message);
+        jQuery('#cdn_cnames > :first-child > :first-child').val(data.data.cnames.shift());
+        for (var x in data.data.cnames) {
+          jQuery('#cdn_cnames').append('<li><input type="text" name="cdn_cnames[]" value="' + data.data.cnames[x] + '" size="60" /> <input class="button cdn_cname_delete" type="button" value="Delete" /> <span></span></li>');
+          w3tc_cdn_cnames_assign();
+        }
+      }
+      element = jQuery('#normal-sortables');
+        if (element.length)
+          element.masonry('reload');
+    }
+    result.removeClass('w3tc-checking');
+    if (data.result != 'error' && data.result != 'notsupported')
+      result.html('Key is valid').addClass('w3tc-success');
+    else
+      result.html(data.message).addClass('w3tc-error');
+    jQuery('#validate_cdn_key').prop('disabled', false);
+  }, 'json');
+}
+
+function w3tc_create_zone(type, nonce) {
+  var params = {
+    w3tc_cdn_auto_create_netdna_maxcdn_pull_zone: 1,
+    type: type,
+    authorization_key: jQuery('#cdn_' + type + '_authorization_key').val(),
+    _wpnonce: nonce
+  };
+  var result = jQuery('#create_pull_zone_result');
+  result.html('').removeClass('w3tc-error').removeClass('w3tc-success').removeClass('w3tc-checking');
+  jQuery("#create_default_zone").prop('disabled', true);
+  result.html('Creating ... ').addClass('w3tc-checking');
+
+  jQuery.post('admin.php?page=w3tc_dashboard', params, function(data) {
+    if (data.cnames && data.cnames.length) {
+      jQuery('#cdn_cnames > :first-child > :first-child').val(data.cnames.shift());
+      for (var i in data.cnames) {
+          jQuery('#cdn_cnames').append('<li><input type="text" name="cdn_cnames[]" value="' + data.cnames[i] + '" size="60" /> <input class="button cdn_cname_delete" type="button" value="Delete" /> <span></span></li>');
+        w3tc_cdn_cnames_assign();
+      }
+      result.text('Created ').removeClass('w3tc-checking').addClass('w3tc-success');
+    } else {
+      result.text(data.message).removeClass('w3tc-checking').addClass('w3tc-error');
+      jQuery("#create_default_zone").prop('disabled', false);
+
+    }
+  }, 'json');
+}
+
+function w3tc_use_poll_zone(type, nonce) {
+  var zone_id = jQuery("#cdn_" + type +"_zone_id").val();
+  var params = {
+    w3tc_cdn_use_netdna_maxcdn_pull_zone: 1,
+    type: type,
+    zone_id: zone_id,
+    authorization_key: jQuery('#cdn_' + type + '_authorization_key').val(),
+    _wpnonce: nonce
+  };
+  jQuery.post('admin.php?page=w3tc_dashboard', params, function(data) {
+    if (data.result == 'valid') {
+      var message = data.cnames.join('<br />');
+      jQuery('#cdn_result_message').html('Zone has been selected and saved for the CDN engine. Hostnames used: <br />' + message);
+      jQuery('#cdn_cnames > :first-child > :first-child').val(data.cnames.shift());
+      for (var i in data.cnames) {
+        jQuery('#cdn_cnames').append('<li><input type="text" name="cdn_cnames[]" value="' + data.cnames[i] + '" size="60" /> <input class="button cdn_cname_delete" type="button" value="Delete" /> <span></span></li>');
+        w3tc_cdn_cnames_assign();
+      }
+    } else {
+      alert(data.message);
+    }
+  }, 'json');
+}
 
 jQuery(function() {
     // general page
@@ -314,7 +593,7 @@ jQuery(function() {
         jQuery(el).removeAttr("was_clicked");
     });
 
-    jQuery('#w3tc_general [type=submit]').bind('click', function(e){
+    jQuery('#w3tc_general [type=submit]').bind('click', function(){
         jQuery(this).attr('was_clicked','yes');
     });
 
@@ -332,9 +611,8 @@ jQuery(function() {
     jQuery('.button-rating').live('click', function() {
         window.open('http://wordpress.org/support/view/plugin-reviews/w3-total-cache?rate=5#postform', '_blank');
     });
-    jQuery('#w3tc_technical_info').hide();
-    jQuery('#w3tc_read_technical_info').click(function() {
-        jQuery('#w3tc_technical_info').toggle();
+    jQuery('.w3tc_read_technical_info').click(function() {
+        jQuery('.w3tc_technical_info').toggle();
     });
 
     jQuery('#newrelic_verify_api_key').click(function() {
@@ -393,6 +671,36 @@ jQuery(function() {
         });
     });
 
+
+    jQuery('#plugin_license_key_verify').click(function() {
+        original_button_value = jQuery('#plugin_license_key_verify').val();
+        jQuery('#plugin_license_key_verify').val("Checking...");
+
+        var license_key = jQuery('#plugin_license_key').val();
+
+        if (!license_key) {
+            alert('Please enter an license key and try again.');
+            return;
+        }
+        var params = {
+            action: 'w3tc_verify_plugin_license_key',
+            license_key: license_key
+        };
+
+        jQuery.get(ajaxurl, params, function(data) {
+            jQuery('#plugin_license_key_verify').val(original_button_value);
+            if (data == 'expired') {
+                alert('The license key has expired. Please renew it.');
+            }else if(data == 'host_valid') {
+                alert('License key is correct.');
+            }else if (data == 'valid') {
+                alert('License key is correct but already in use on another site. See the FAQ for how to enable Pro version in development mode.');
+            }else {
+                alert('The license key is not valid. Please check it and try again.');
+            }
+        });
+    });
+
     jQuery("#manual").click(function () {
         jQuery('#newrelic_application_name_textbox_div').show();
         jQuery('#newrelic_application_id_dropdown_div').hide();
@@ -438,7 +746,7 @@ jQuery(function() {
     w3tc_toggle2('browsercache_etag',
         ['browsercache_cssjs_etag', 'browsercache_html_etag', 'browsercache_other_etag']);
     w3tc_toggle2('browsercache_w3tc',
-        ['browsercache.cssjs_w3tc', 'browsercache.html_w3tc', 'browsercache.other_w3tc']);
+        ['browsercache_cssjs_w3tc', 'browsercache_html_w3tc', 'browsercache_other_w3tc']);
     w3tc_toggle2('browsercache_compression',
         ['browsercache_cssjs_compression', 'browsercache_html_compression', 'browsercache_other_compression']);
     w3tc_toggle2('browsercache_replace',
@@ -620,6 +928,13 @@ jQuery(function() {
         return true;
     });
 
+    jQuery('#minify_auto_disable_filename_length_test').live('click', function() {
+        if(jQuery(this).attr('checked'))
+            jQuery('#minify_auto_filename_length').removeAttr('disabled');
+        else
+            jQuery('#minify_auto_filename_length').attr('disabled','disabled');
+    });
+
     // CDN
     jQuery('.w3tc-tab').click(function() {
         jQuery('.w3tc-tab-content').hide();
@@ -654,6 +969,18 @@ jQuery(function() {
     jQuery('.cdn_export').click(function() {
         var metadata = jQuery(this).metadata();
         w3tc_popup('admin.php?page=w3tc_cdn&w3tc_cdn_export&cdn_export_type=' + metadata.type + '&_wpnonce=' + metadata.nonce, 'cdn_export_' + metadata.type);
+    });
+
+    jQuery('#validate_cdn_key').click(function() {
+      var me = jQuery(this);
+      var metadata = me.metadata();
+      w3tc_validate_cdn_key_result(metadata.type, metadata.nonce);
+    });
+
+    jQuery('#use_poll_zone').click(function() {
+      var me = jQuery(this);
+      var metadata = me.metadata();
+      w3tc_use_poll_zone(metadata.type, metadata.nonce);
     });
 
     jQuery('#cdn_test').click(function() {
@@ -760,12 +1087,22 @@ jQuery(function() {
                 }
                 break;
 
+            case 'maxcdn':
+                jQuery.extend(params, {
+                    engine: 'maxcdn',
+                    'config[authorization_key]': jQuery('#cdn_maxcdn_authorization_key').val(),
+                    'config[zone_id]': jQuery('#cdn_maxcdn_zone_id').val()
+                });
+
+                if (cnames.length) {
+                    params['config[domain][]'] = cnames;
+                }
+                break;
             case 'netdna':
                 jQuery.extend(params, {
                     engine: 'netdna',
-                    'config[alias]': jQuery('#cdn_netdna_alias').val(),
-                    'config[consumerkey]': jQuery('#cdn_netdna_consumerkey').val(),
-                    'config[consumersecret]': jQuery('#cdn_netdna_consumersecret').val()
+                    'config[authorization_key]': jQuery('#cdn_netdna_authorization_key').val(),
+                    'config[zone_id]': jQuery('#cdn_netdna_zone_id').val()
                 });
 
                 if (cnames.length) {
@@ -1460,6 +1797,19 @@ jQuery(function() {
         } else {
             rules.css('display', 'block');
             btn.val('Hide required changes');
+        }
+    });
+
+    // show hide missing files
+    jQuery('.w3tc-show-ftp-form').click(function() {
+        var btn = jQuery(this), rules = jQuery('.w3tc-ftp-form');
+
+        if (rules.is(':visible')) {
+            rules.css('display', 'none');
+            btn.val('Update via FTP');
+        } else {
+            rules.css('display', 'block');
+            btn.val('Cancel FTP Update');
         }
     });
 

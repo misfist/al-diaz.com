@@ -402,11 +402,24 @@ class W3_Enterprise_DbCluster extends W3_DbProcessor {
      * @return boolean
      */
     function _is_current_zone($zone) {
+        // obsolete
         if (isset($zone['SERVER_NAME'])) {
             if ($_SERVER['SERVER_NAME'] == $zone['SERVER_NAME'])
                 return true;
         }
-        
+
+        if (isset($zone['server_names'])) {
+            if (!is_array($zone['server_names']))
+                die('server_names must be defined as array');
+
+            foreach ($zone['server_names'] as $server_name) {
+                if ($server_name == '*')
+                    return true;
+                if ($_SERVER['SERVER_NAME'] == $server_name)
+                    return true;
+            }
+        }
+
         return false;
     }
         
@@ -514,6 +527,9 @@ class W3_Enterprise_DbCluster extends W3_DbProcessor {
             }
         }
 
+        if ( function_exists( 'apply_filters' ) )
+            apply_filters( 'after_query', $query );
+
         // If there is an error then take note of it
         if ($this->manager->last_error = mysql_error($this->manager->dbh)) {
             $this->manager->print_error($this->manager->last_error);
@@ -532,10 +548,12 @@ class W3_Enterprise_DbCluster extends W3_DbProcessor {
         } else {
             $i = 0;
             $this->manager->col_info = array();
+            $col_info = array();
             while ($i < @mysql_num_fields($this->manager->result)) {
-                $this->manager->col_info[$i] = @mysql_fetch_field($this->manager->result);
+                $col_info[$i] = @mysql_fetch_field($this->manager->result);
                 $i++;
             }
+            $this->manager->col_info = $col_info;
             $num_rows = 0;
             $this->manager->last_result = array();
             while ($row = @mysql_fetch_object($this->manager->result)) {
@@ -584,7 +602,7 @@ class W3_Enterprise_DbCluster extends W3_DbProcessor {
      * Generic function to determine if a database supports a particular feature
      * The additional argument allows the caller to check a specific database.
      * @param string $db_cap the feature
-     * @param false|string|resource $dbh_or_table the databaese (the current database, the database housing the specified table, or the database of the mysql resource)
+     * @param bool|string|resource $dbh_or_table the databaese (the current database, the database housing the specified table, or the database of the mysql resource)
      * @return bool
      */
     function has_cap($db_cap, $dbh_or_table = false) {
@@ -609,9 +627,9 @@ class W3_Enterprise_DbCluster extends W3_DbProcessor {
      */
     function db_version($dbh_or_table = false) {
         if (!$dbh_or_table && $this->manager->dbh)
-            $dbh = & $this->manager->dbh;
+            $dbh = $this->manager->dbh;
         elseif (is_resource($dbh_or_table))
-            $dbh = & $dbh_or_table;
+            $dbh = $dbh_or_table;
         else
             $dbh = $this->db_connect("SELECT FROM $dbh_or_table $this->manager->users");
 

@@ -1,9 +1,9 @@
-=== Reveal IDs ===
+﻿=== Reveal IDs ===
 Contributors: Alphawolf
 Donate link: http://www.schloebe.de/donate/
 Tags: reveal, id, wp-admin, hidden, category, post, page, media, links, capability, user, restore, comments, taxonomy, custom posts
 Requires at least: 3.0
-Tested up to: 3.6
+Tested up to: 4.1
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -22,6 +22,8 @@ What this plugin does is to reveal most removed entry IDs on admin pages, showin
 * Sortable columns for WP 3.1 or higher
 
 [Developer on Google+](https://plus.google.com/118074611982254715031 "Developer on Google+") | [Developer on Twitter](http://twitter.com/wpseek "Developer on Twitter")
+
+[Become A Patron, Support The Developer.](http://www.patreon.com/oliver_schloebe "Become A Patron, Support The Developer.")
 
 **Included languages:**
 
@@ -53,6 +55,10 @@ None.
 1. Installation finished.
 
 == Changelog ==
+
+= 1.4.5 =
+* Fixed a 'Redefining already defined constructor' bug that occured on several configurations
+* Prepwork for Language Packs
 
 = 1.4.1 =
 * Increased width and added word-wrap for ID columns (for long IDs)
