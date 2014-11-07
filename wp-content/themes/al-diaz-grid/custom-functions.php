@@ -92,4 +92,3 @@ function tie_taxonomy_filter($taxonomy='category', $enable='disable', $exclude='
 <?php } 
 
 ?>
-
