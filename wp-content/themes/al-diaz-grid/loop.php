@@ -29,7 +29,8 @@ if( is_home() && $exc_home_cats ) query_posts( array( 'category__not_in' => $exc
 			<li>
 				<?php echo get_avatar( get_the_author_meta( 'user_email' ), apply_filters( 'MFW_author_bio_avatar_size', 30 ) ); ?>
 				<?php _e( 'by: ' , 'tie' ); ?> <a href="<?php echo get_author_posts_url( get_the_author_meta( 'ID' ) )?>" title="<?php sprintf( esc_attr__( 'View all posts by %s', 'tie' ), get_the_author() ) ?>"><?php echo get_the_author() ?> </a>
-				<?php _e( 'in ' , 'tie' ); ?> <?php printf('%1$s', get_the_category_list( ', ' ) ); ?>
+				<?php _e( 'in ' , 'tie' ); ?> <?php printf('%1$s', get_the_category_list( ', ' ) ); ?> 
+				<?php _e( 'tagged: ' , 'tie' ); ?> <?php printf('%1$s', get_the_tag_list('', ', ', '') ); ?>
 				<p><span class="entry-visits"><a href="<?php the_permalink(); ?>" title="<?php printf( esc_attr__( 'Permalink to %s', 'tie' ), the_title_attribute( 'echo=0' ) ); ?>"><?php echo tie_views(); ?></a></span>
 				<span class="entry-comments"><?php comments_popup_link('0', '1' , '%' ); ?></span>
 				<span class="entry-likes"><?php tie_post_likes() ?></span></p>
