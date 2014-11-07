@@ -3,7 +3,7 @@ body {
 }
 
 .background-cover {
-	background-color: $black;
+	background-color: $gray1;
 }
 
 // Headings
@@ -11,9 +11,9 @@ h4.widget-top
 .page-title,
 .entry-title,
 p.post-meta {
-	font-family: 'Allerta Stencil';
+	font-family: $stencil, $oswald, $sans;
 	a {
-		font-family: 'Allerta Stencil';
+		font-family: $stencil, $oswald, $sans;
 	}
 }
 
@@ -39,56 +39,6 @@ h2#site-title a  {
 	color: $white;
 }
 
-#main-nav ul li a:hover  {
-	border-top: 1px solid $red;
-}
-
-#menu-primary-navigation {
-	padding-top: 0;
-	margin-top: 0;
-}
-
-#main-nav {
-	ul {
-		li,
-		ul {
-			a {
-				color: $white !important;
-			}
-		}
-	}
-}
-
-#filters {
-	li {
-		background: $white;
-		padding: 6px 6px;
-		margin-bottom: 5px;
-		a {
-			padding: 6px;
-			font-family: $sans;
-			color: $black;
-			font-size: 16px;
-			line-height: inherit;
-		}
-
-		&.current,
-		&:hover {
-			background: $black;
-			padding: 6px 8px;
-		}
-	}
-
-	li.current a,
-	li:hover a {
-		
-		font-family: $sans !important;
-		font-style: normal;
-		color: $white;
-		border-radius: 0;
-	}
-}
-
 .post-footer {
 	margin-bottom: 0;
 	// padding-bottom: 0 !important;
@@ -110,5 +60,6 @@ footer,
 		color: $white !important;;
 	}
 }
+
 
 

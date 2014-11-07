@@ -7,8 +7,8 @@
 body {
 	background: $color_wild_sand url(images/patterns/body-bg1.png);
 	color: $gray3;
-	font-family: $opensans, $arial, $verdana, $sans;
-	font-size: 12px;
+	font-family: $sans;
+	font-size: 14px;
 	&.admin-bar .fixed-head {
 		top: 28px;
 	}
@@ -463,149 +463,7 @@ a {
 	clear: both;
 }
 
-#main-nav {
-	margin: 0 auto;
-	height: 40px;
-	ul {
-		li {
-			font-size: 13px;
-			position: relative;
-			height: 40px;
-			float: left;
-			a {
-				@extend %extend_list-links;
-				display: inline-block;
-				height: 40px;
-				line-height: 40px;
-				color: $gray9;
-				padding: 0 15px;
-				//Instead of the line below you could use @includetext-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
-				text-shadow: 0 1px 1px $white;
-				margin-top: -1px;
-				border: 1px solid transparent;
-				.sub-indicator {
-				}
-				&:hover {
-					border-top-color: $black;
-				}
-			}
-			&.current-menu-item {
-				a {
-					@extend %extend_nav-list-links;
-					&:hover {
-						@extend %extend_nav-list-links;
-					}
-				}
-				ul a {
-					color: $black !important;
-				}
-			}
-			&:hover > {
-				a {
-					color: $black;
-				}
-				ul {
-					display: block;
-				}
-			}
-		}
-		ul {
-			display: none;
-			padding: 0;
-			position: absolute;
-			top: 40px;
-			width: 180px;
-			z-index: 99999;
-			float: left;
-			background: #F3F3F3 !important;
-			//vendor-prefix found
-			//-webkit-box-shadow: 0 3px 4px 1px rgba(0, 0, 0, 0.2)
-			//Instead of the line below you could use @includebox-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
-			box-shadow: 0 3px 4px 1px $black_20;
-			//vendor-prefix found
-			//-webkit-border-bottom-right-radius: 3px
-			//vendor-prefix found
-			//-webkit-border-bottom-left-radius: 3px
-			//vendor-prefix found
-			//-moz-border-radius-bottomright: 3px
-			//vendor-prefix found
-			//-moz-border-radius-bottomleft: 3px
-			//Instead of the line below you could use @includeborder-bottom-right-radius($radius)
-			border-bottom-right-radius: 3px;
-			//Instead of the line below you could use @includeborder-bottom-left-radius($radius)
-			border-bottom-left-radius: 3px;
-			text-align: left;
-			li {
-				@extend %extend_nav-list;
-				&:first-child {
-					@extend %extend_nav-list;
-					border-top: 0 none !important;
-				}
-				&:hover > a {
-					color: $black !important;
-					padding-left: 15px !important;
-					padding-right: 5px !important;
-				}
-			}
-			ul {
-				right: auto;
-				left: 100%;
-				top: 0;
-				z-index: 99999;
-			}
-			:hover > a {
-				color: $black !important;
-				padding-left: 15px !important;
-				padding-right: 5px !important;
-			}
-		}
-		&.sub-menu {
-			a {
-				border: 0 none;
-				background: none !important;
-				height: auto !important;
-				line-height: 1em;
-				padding: 10px;
-				width: 160px;
-				display: block !important;
-				margin-right: 0 !important;
-				z-index: 99999;
-				color: $color_ironside_gray !important;
-				//Instead of the line below you could use @includetext-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
-				text-shadow: 0 1px 1px #FFF !important;
-				font-weight: normal !important;
-			}
-			li.current-menu-item {
-				height: auto !important;
-				line-height: 12px;
-				a {
-					height: auto !important;
-					line-height: 12px;
-				}
-				&::after {
-					display: none;
-					border: 0 solid transparent;
-				}
-			}
-		}
-		:hover > a {
-			color: $black;
-		}
-	}
-	.menu-alert {
-		padding-top: 10px;
-		font-style: italic;
-		text-align: center;
-	}
-	.main-menu {
-		margin: 0 auto;
-		border-top: 1px solid $color_gallery;
-	}
-	li.current-menu-item ul.sub-menu a {
-		height: auto !important;
-		line-height: 12px;
-	}
-}
+
 textarea {
 	border: 1px solid $graymidlight;
 	background: $white;
@@ -2356,21 +2214,27 @@ blockquote {
 		width: 245px;
 		position: relative;
 		font-size: 14px;
-		color: $gray9;
+		color: $black;
 		span {
 			display: block;
 			font-size: 80%;
-			color: $gray9;
+			color: $black;
 		}
 		a:after {
 			position: absolute;
-			color: $graymidlight;
+			color: $black;
 			font-size: 56px;
 			margin-top: -11px;
 			height: 22px;
 			line-height: 22px;
 			top: 34%;
 		}
+	}
+}
+.post-previous,
+.post-next {
+	a:after {
+		color: $black;
 	}
 }
 .post-previous {

@@ -24,6 +24,7 @@
 //#main-nav ul li a, .post-title a, .pagenavi a, a.more-link, .main-menu li a, .subscribe-icons a, .flickr_badge_image img
 %extend_list-links {
 	webkit-transition: all .2s ease-in-out;
+	transition: all .2s ease-in-out;
 	//vendor-prefix found
 	//-moz-transition: all .2s ease-in-out
 	//vendor-prefix found
@@ -31,7 +32,6 @@
 	//vendor-prefix found
 	//-ms-transition: all .2s ease-in-out
 	//Instead of the line below you could use @includetransition($transition-1, $transition-2, $transition-3, $transition-4, $transition-5, $transition-6, $transition-7, $transition-8, $transition-9, $transition-10)
-	transition: all .2s ease-in-out;
 }
 
 //original selectors
@@ -51,11 +51,11 @@
 //original selectors
 //#main-nav ul li.current-menu-item a, #main-nav ul li.current-menu-item a:hover
 %extend_nav-list-links {
-	color: $black;
+	border-top-color: $red;
 	height: 40px;
 	line-height: 40px;
+	color: $black;
 	font-weight: bold;
-	border-top-color: $red;
 }
 
 //original selectors
