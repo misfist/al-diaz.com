@@ -4731,6 +4731,10 @@ ul#filters li:hover a {
   color: white;
   border-radius: 0; }
 
+/* line 12, ../sass/partials/_comments.scss */
+.nocomments {
+  display: none; }
+
 /* line 1, ../sass/custom/_site.scss */
 body {
   font-family: Lato Sans, sans-serif; }
