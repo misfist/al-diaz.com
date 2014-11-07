@@ -12,7 +12,7 @@
 
 	Tags: two-columns, fixed-width, custom-background, threaded-comments, translation-ready, custom-menu
 ***************************************/
-@import url(http://fonts.googleapis.com/css?family=Lato:400,700,700italic,300,300italic,400italic);
+@import url(http://fonts.googleapis.com/css?family=Oswald|Droid+Sans:400,700|family=Lato:400,700,700italic,300,300italic,400italic);
 /* line 10, ../sass/partials/_normalize.scss */
 html {
   font-family: sans-serif;
@@ -456,7 +456,7 @@ a.jp-play, a.jp-pause {
 body {
   background: #ff0000 url(images/patterns/body-bg1.png);
   color: #333;
-  font-family: "Lato", sans-serif;
+  font-family: Lato Sans, sans-serif;
   font-size: 14px; }
   /* line 12, ../sass/partials/_base.scss */
   body.admin-bar .fixed-head {
@@ -481,7 +481,7 @@ h2 {
     margin-right: 10px;
     text-transform: capitalize;
     font-size: 26px;
-    font-family: BebasNeueRegular, "Lato", sans-serif;
+    font-family: BebasNeueRegular, Lato Sans, sans-serif;
     color: #000; }
   /* line 42, ../sass/partials/_base.scss */
   h2.entry-title {
@@ -505,7 +505,7 @@ h4 {
   h4.widget-top {
     font-size: 20px;
     text-transform: capitalize;
-    font-family: BebasNeueRegular, "Lato", sans-serif;
+    font-family: BebasNeueRegular, Lato Sans, sans-serif;
     margin-bottom: 15px; }
     /* line 63, ../sass/partials/_base.scss */
     h4.widget-top a {
@@ -984,7 +984,7 @@ header {
   .welcome-message h4,
   .welcome-message h5,
   .welcome-message h6 {
-    font-family: BebasNeueRegular, "Lato", sans-serif;
+    font-family: BebasNeueRegular, Lato Sans, sans-serif;
     margin: 0 0 .2em;
     color: #ff0000;
     font-style: italic; }
@@ -996,7 +996,7 @@ header {
 
 /* line 847, ../sass/partials/_base.scss */
 #main-content {
-  margin: 20px auto;
+  margin: 0 auto 20px auto;
   position: relative; }
   /* line 850, ../sass/partials/_base.scss */
   #main-content #grid {
@@ -1824,7 +1824,7 @@ div.jp-audio {
   #content-container .entry-title {
     font-size: 26px;
     text-transform: capitalize;
-    font-family: BebasNeueRegular, "Lato", sans-serif;
+    font-family: BebasNeueRegular, Lato Sans, sans-serif;
     margin: 5px 0;
     font-weight: normal; }
 
@@ -2044,7 +2044,7 @@ a[rel=prettyPhoto] {
     background-color: #F9F9F9;
     width: 100%;
     border-radius: 3px;
-    font-family: arial, Bitstream Vera Sans, Helvetica, Verdana, "Lato", sans-serif;
+    font-family: arial, Bitstream Vera Sans, Helvetica, Verdana, Lato Sans, sans-serif;
     color: #333;
     border-collapse: separate;
     border-spacing: 0; }
@@ -2190,7 +2190,7 @@ blockquote {
     margin-right: 10px;
     text-transform: capitalize;
     font-size: 22px;
-    font-family: BebasNeueRegular, "Lato", sans-serif; }
+    font-family: BebasNeueRegular, Lato Sans, sans-serif; }
 
 /* line 2197, ../sass/partials/_base.scss */
 .navigation {
@@ -2636,7 +2636,7 @@ footer {
   background: url(images/rss-icon.png) no-repeat center top; }
 /* line 2722, ../sass/partials/_base.scss */
 .rss-subscribers span {
-  font-family: BebasNeueRegular, "Lato", sans-serif;
+  font-family: BebasNeueRegular, Lato Sans, sans-serif;
   font-size: 14pt;
   display: inline-block; }
 
@@ -2854,7 +2854,7 @@ footer {
   /* line 2956, ../sass/partials/_base.scss */
   .footer-widget-top h4 {
     font-size: 22px;
-    font-family: BebasNeueRegular, "Lato", sans-serif; }
+    font-family: BebasNeueRegular, Lato Sans, sans-serif; }
 
 /* line 2961, ../sass/partials/_base.scss */
 .scrollToTop {
@@ -2954,7 +2954,7 @@ img.alignleft {
 #comments-title {
   text-transform: capitalize;
   font-size: 22px;
-  font-family: BebasNeueRegular, "Lato", sans-serif;
+  font-family: BebasNeueRegular, Lato Sans, sans-serif;
   margin: 25px 0 10px; }
   /* line 3073, ../sass/partials/_base.scss */
   #comments-title em {
@@ -3036,7 +3036,7 @@ img.alignleft {
   #respond h3 {
     text-transform: capitalize;
     font-size: 22px;
-    font-family: BebasNeueRegular, "Lato", sans-serif; }
+    font-family: BebasNeueRegular, Lato Sans, sans-serif; }
 
 /* line 3168, ../sass/partials/_base.scss */
 #commentform {
@@ -3254,7 +3254,7 @@ img.alignleft {
   margin: 0 8px 0 0;
   font-size: 50px;
   line-height: 50px;
-  font-family: Helvetica, "Lato", sans-serif; }
+  font-family: Helvetica, Lato Sans, sans-serif; }
 
 /* line 3438, ../sass/partials/_base.scss */
 .box {
@@ -4696,34 +4696,34 @@ html[xmlns] .slides {
     line-height: 12px; }
 
 /* line 154, ../sass/partials/_navigation.scss */
-#filters li {
+ul#filters li {
   background: white;
   padding: 6px 6px;
-  margin-bottom: 5px; }
+  margin-top: 5px; }
   /* line 158, ../sass/partials/_navigation.scss */
-  #filters li a {
+  ul#filters li a {
     padding: 6px;
-    font-family: "Lato", sans-serif;
+    font-family: Lato Sans, sans-serif;
     color: #000;
     font-size: 16px;
     line-height: inherit; }
   /* line 166, ../sass/partials/_navigation.scss */
-  #filters li.current, #filters li:hover {
+  ul#filters li.current, ul#filters li:hover {
     background: #000;
     padding: 6px 8px;
     webkit-transition: all .2s ease-in-out;
     transition: all .2s ease-in-out; }
 /* line 176, ../sass/partials/_navigation.scss */
-#filters li.current a,
-#filters li:hover a {
-  font-family: "Lato", sans-serif !important;
+ul#filters li.current a,
+ul#filters li:hover a {
+  font-family: Lato Sans, sans-serif !important;
   font-style: normal;
   color: white;
   border-radius: 0; }
 
 /* line 1, ../sass/custom/_site.scss */
 body {
-  font-family: "Lato", sans-serif; }
+  font-family: Lato Sans, sans-serif; }
 
 /* line 5, ../sass/custom/_site.scss */
 .background-cover {
@@ -4732,41 +4732,39 @@ body {
 /* line 10, ../sass/custom/_site.scss */
 h4.widget-top
 .page-title,
-.entry-title,
-p.post-meta {
-  font-family: Allerta Stencil, Oswald, "Lato", sans-serif; }
-  /* line 15, ../sass/custom/_site.scss */
-  h4.widget-top
-  .page-title a,
-  .entry-title a,
-  p.post-meta a {
-    font-family: Allerta Stencil, Oswald, "Lato", sans-serif; }
+.entry-title {
+  font-family: Allerta Stencil, Oswald, Lato Sans, sans-serif; }
 
-/* line 21, ../sass/custom/_site.scss */
+/* line 19, ../sass/custom/_site.scss */
+h4.widget-top {
+  margin-top: 0;
+  text-transform: uppercase; }
+
+/* line 25, ../sass/custom/_site.scss */
 .entry h1,
 .entry h2,
 .entry h3 {
-  font-family: 'Oswald'; }
+  font-family: Oswald; }
 
-/* line 28, ../sass/custom/_site.scss */
+/* line 32, ../sass/custom/_site.scss */
 header {
   background: #000;
   box-shadow: none; }
 
-/* line 33, ../sass/custom/_site.scss */
+/* line 37, ../sass/custom/_site.scss */
 h2#site-title a {
   color: white;
   text-transform: uppercase; }
 
-/* line 38, ../sass/custom/_site.scss */
+/* line 42, ../sass/custom/_site.scss */
 .logo span {
   color: white; }
 
-/* line 42, ../sass/custom/_site.scss */
+/* line 46, ../sass/custom/_site.scss */
 .post-footer {
   margin-bottom: 0; }
 
-/* line 47, ../sass/custom/_site.scss */
+/* line 51, ../sass/custom/_site.scss */
 #load-more:link,
 #load-more:visited {
   background: #000;
@@ -4775,11 +4773,11 @@ h2#site-title a {
   color: white;
   text-transform: uppercase; }
 
-/* line 56, ../sass/custom/_site.scss */
+/* line 60, ../sass/custom/_site.scss */
 footer,
 .footer-bottom {
   background: #000; }
-  /* line 59, ../sass/custom/_site.scss */
+  /* line 63, ../sass/custom/_site.scss */
   footer a,
   .footer-bottom a {
     color: white !important; }

@@ -9,19 +9,23 @@ body {
 // Headings
 h4.widget-top
 .page-title,
-.entry-title,
-p.post-meta {
+.entry-title {
 	font-family: $stencil, $oswald, $sans;
-	a {
-		font-family: $stencil, $oswald, $sans;
-	}
+	// a {
+	// 	font-family: $sans;
+	// }
+}
+
+h4.widget-top {
+	margin-top: 0;
+	text-transform: uppercase;
 }
 
 .entry {
 	h1,
 	h2,
 	h3 {
-		font-family: 'Oswald';
+		font-family: $oswald;
 	}
 }
 

@@ -1,12 +1,9 @@
-@import url(http://fonts.googleapis.com/css?family=Lato:400,700,700italic,300,300italic,400italic);
-
-//fonts
-$serif: serif;
-$sans: 'Lato', sans-serif;
-$mono: monospace;
+@import url(http://fonts.googleapis.com/css?family=Oswald|Droid+Sans:400,700|family=Lato:400,700,700italic,300,300italic,400italic);
 
 $bebase: BebasNeueRegular;
+$lato: Lato Sans;
 $opensans: Open Sans;
+$droid: Droid Sans;
 $arial: arial;
 $verdana: Verdana;
 $stencil: Allerta Stencil;
@@ -20,6 +17,11 @@ $helvetica: Helvetica;
 $radley: Radley;
 $bitstreamsans: Bitstream Vera Sans;
 $bitstreamcharter: Bitstream Charter;
+
+//fonts
+$serif: serif;
+$sans: $lato, sans-serif;
+$mono: monospace;
 
 //colors
 $white: white;
