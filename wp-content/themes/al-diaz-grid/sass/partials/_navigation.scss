@@ -27,14 +27,19 @@
 				}
 			}
 			&.current-menu-item {
+				background: $white;
 				a {
 					@extend %extend_nav-list-links;
+					color: $black;
+					text-shadow: none;
 					&:hover {
 						@extend %extend_nav-list-links;
+						color: $black;
+
 					}
 				}
 				ul a {
-					color: $black !important;
+					color: $white !important;
 				}
 			}
 			&:hover > {
