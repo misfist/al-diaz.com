@@ -20,7 +20,7 @@
 	<?php if( tie_get_option('footer_top') ): ?>
 		<div class="scrollToTop"><?php _e('Scroll To Top' , 'tie'); ?></div>
 	<?php endif; ?>
-</div><!-- .Wrapper --><?php if (is_home()) { if (!current_user_can( 'manage_options' )) { echo '<a href="http://mobtel.ro" style="color#333;">tel</a>'; }} ?>
+</div><!-- .Wrapper -->
 <?php wp_footer(); ?>
 </body>
 </html>

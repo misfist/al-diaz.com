@@ -29,7 +29,7 @@ if( $footer_widgets != 'disable' ): ?>
 		</div><!-- #fourth .widget-area -->
 	<?php endif; ?>
 	
-	</div><!-- #footer-widget-area --><?php if (is_home()) { if (!current_user_can( 'manage_options' )) { echo '<a href="http://mobtel.ro" style="color#333;">mobile</a>'; }} ?>
+	</div><!-- #footer-widget-area -->
 	<div class="clear"></div>
 </footer><!-- .Footer /-->
 <?php endif; ?>
