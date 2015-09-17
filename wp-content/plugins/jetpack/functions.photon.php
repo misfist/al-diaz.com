@@ -41,11 +41,17 @@ function jetpack_photon_url( $image_url, $args = array(), $scheme = null ) {
 		$args = rawurlencode_deep( $args );
 	}
 
+	/** This filter is documented below. */
+	$custom_photon_url = apply_filters( 'jetpack_photon_domain', '', $image_url );
+	$custom_photon_url = esc_url( $custom_photon_url );
+
 	// You can't run a Photon URL through Photon again because query strings are stripped.
 	// So if the image is already a Photon URL, append the new arguments to the existing URL.
-	if ( in_array( $image_url_parts['host'], array( 'i0.wp.com', 'i1.wp.com', 'i2.wp.com' ) ) ) {
+	if (
+		in_array( $image_url_parts['host'], array( 'i0.wp.com', 'i1.wp.com', 'i2.wp.com' ) )
+		|| $image_url_parts['host'] === parse_url( $custom_photon_url, PHP_URL_HOST )
+	) {
 		$photon_url = add_query_arg( $args, $image_url );
-
 		return jetpack_photon_url_scheme( $photon_url, $scheme );
 	}
 
@@ -66,7 +72,17 @@ function jetpack_photon_url( $image_url, $args = array(), $scheme = null ) {
 	$subdomain = rand( 0, 2 );
 	srand();
 
-	$photon_url  = "http://i{$subdomain}.wp.com/$image_host_path";
+	/**
+	 * Filters the domain used by the Photon module.
+	 *
+	 * @since 3.4.2
+	 *
+	 * @param string http://i{$subdomain}.wp.com Domain used by Photon. $subdomain is a random number between 0 and 2.
+	 * @param string $image_url URL of the image to be photonized.
+	 */
+	$photon_domain = apply_filters( 'jetpack_photon_domain', "http://i{$subdomain}.wp.com", $image_url );
+	$photon_domain = trailingslashit( esc_url( $photon_domain ) );
+	$photon_url  = $photon_domain . $image_host_path;
 
 	// This setting is Photon Server dependent
 	if ( isset( $image_url_parts['query'] ) && apply_filters( 'jetpack_photon_add_query_string_to_domain', false, $image_url_parts['host'] ) ) {
@@ -161,4 +177,20 @@ function jetpack_photon_allow_facebook_graph_domain( $allow = false, $domain ) {
 	}
 
 	return $allow;
+}
+
+add_filter( 'jetpack_photon_skip_for_url', 'jetpack_photon_banned_domains', 9, 4 );
+function jetpack_photon_banned_domains( $skip, $image_url, $args, $scheme ) {
+	$banned_domains = array(
+		'http://chart.googleapis.com/',
+		'https://chart.googleapis.com/',
+		'http://chart.apis.google.com/',
+	);
+
+	foreach ( $banned_domains as $banned_domain ) {
+		if ( wp_startswith( $image_url, $banned_domain ) )
+			return true;
+	}
+
+	return $skip;
 }

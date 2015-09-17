@@ -185,12 +185,9 @@ function wpua_donation_message() {
  * @since 1.6.6
  */
 function wpua_do_donation_message() { ?>
-   <div class="updated">
-    <p><?php _e('Do you like WP User Avatar?', 'wp-user-avatar'); ?> <a href="http://wordpress.org/plugins/wp-google-map-plugin/" target="_blank"><?php _e('Try our Google Maps Plugin.', 'wp-user-avatar'); ?></a></p> 
-  </div>
  <?php 
 }
-add_action('wpua_donation_message', 'wpua_do_donation_message');
+//add_action('wpua_donation_message', 'wpua_do_donation_message');
 
 /**
  * Register widget

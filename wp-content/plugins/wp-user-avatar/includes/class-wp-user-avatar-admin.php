@@ -24,7 +24,6 @@ class WP_User_Avatar_Admin {
     // Settings saved to wp_options
     add_action('admin_init', array($this, 'wpua_options'));
     // Remove subscribers edit_posts capability
-    register_deactivation_hook(WPUA_DIR.'wp-user-avatar.php', array($this, 'wpua_deactivate'));
     // Translations
     load_plugin_textdomain('wp-user-avatar', "", WPUA_FOLDER.'/lang');
     // Admin menu settings
@@ -43,6 +42,7 @@ class WP_User_Avatar_Admin {
     }
     // Media states
     add_filter('display_media_states', array($this, 'wpua_add_media_state'), 10, 1);
+	
   }
 
   /**
@@ -51,6 +51,7 @@ class WP_User_Avatar_Admin {
    * @uses add_option()
    */
   public function wpua_options() {
+    
     add_option('avatar_default_wp_user_avatar', "");
     add_option('wp_user_avatar_allow_upload', '0');
     add_option('wp_user_avatar_disable_gravatar', '0');
@@ -60,7 +61,24 @@ class WP_User_Avatar_Admin {
     add_option('wp_user_avatar_resize_upload', '0');
     add_option('wp_user_avatar_resize_w', '96');
     add_option('wp_user_avatar_tinymce', '1');
-    add_option('wp_user_avatar_upload_size_limit', '0');
+    add_option('wp_user_avatar_upload_size_limit', '0');	
+
+    if(wp_next_scheduled( 'wpua_has_gravatar_cron_hook' )){
+      $cron=get_option('cron');
+      $new_cron='';
+      foreach($cron as $key=>$value)
+      {
+        if(is_array($value))
+        {
+        if(array_key_exists('wpua_has_gravatar_cron_hook',$value))
+        unset($cron[$key]);
+        }
+      }
+      update_option('cron',$cron);
+  }
+
+
+
   }
 
   /**
@@ -82,6 +100,7 @@ class WP_User_Avatar_Admin {
     update_option($wp_user_roles, $user_roles);
     // Reset all default avatars to Mystery Man
     update_option('avatar_default', 'mystery');
+	
   }
 
   /**
@@ -252,7 +271,7 @@ class WP_User_Avatar_Admin {
     if((bool) $wpua_disable_gravatar != 1) {
       return $wpua_list.'<div id="wp-avatars">'.$avatar_list.'</div>';
     } else {
-      return $wpua_list;
+      return $wpua_list.'<div id="wp-avatars" style="display:none;">'.$avatar_list.'</div>';
     }
   }
 
@@ -276,7 +295,7 @@ class WP_User_Avatar_Admin {
    */
   public function wpua_action_links($links, $file) { 
     if(basename(dirname($file)) == 'wp-user-avatar') {
-      $links[] = '<a href="'.add_query_arg(array('page' => 'wp-user-avatar'), admin_url('admin.php')).'">'.__('Settings').'</a>';
+      $links[] = '<a href="'.esc_url(add_query_arg(array('page' => 'wp-user-avatar'), admin_url('admin.php'))).'">'.__('Settings').'</a>';
     }
     return $links;
   }
@@ -291,7 +310,6 @@ class WP_User_Avatar_Admin {
   public function wpua_row_meta($links, $file) {
     if(basename(dirname($file)) == 'wp-user-avatar') {
       $links[] = '<a href="http://wordpress.org/support/plugin/wp-user-avatar" target="_blank">'.__('Support Forums').'</a>';
-      $links[] = '<a href="http://siboliban.org/donate" target="_blank">'.__('Donate', 'wp-user-avatar').'</a>';
     }
     return $links;
   }
@@ -369,6 +387,7 @@ class WP_User_Avatar_Admin {
      */
     return apply_filters('wpua_add_media_state', $states);
   }
+  
 }
 
 /**

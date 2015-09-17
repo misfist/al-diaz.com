@@ -51,6 +51,8 @@ $wpua_options_page_title = apply_filters('wpua_options_page_title', $wpua_option
 
 <div class="wrap">
   <h2><?php echo $wpua_options_page_title; ?></h2>
+  <table><tr valign="top">
+    <td align="top">
   <form method="post" action="<?php echo admin_url('options.php'); ?>">
     <?php settings_fields('wpua-settings-group'); ?>
     <?php do_settings_fields('wpua-settings-group', ""); ?>
@@ -168,8 +170,7 @@ $wpua_options_page_title = apply_filters('wpua_options_page_title', $wpua_option
         </fieldset>
         </td>
       </tr>
-      <?php if((bool) $wpua_disable_gravatar != 1) : ?>
-        <tr valign="top" id="avatar-rating">
+        <tr valign="top" id="avatar-rating" <?php echo ((bool) $wpua_disable_gravatar == 1) ? 'style="display:none"' : ''?>>
           <th scope="row"><?php _e('Maximum Rating'); ?></th>
           <td>
             <fieldset>
@@ -189,9 +190,6 @@ $wpua_options_page_title = apply_filters('wpua_options_page_title', $wpua_option
             </fieldset>
           </td>
         </tr>
-      <?php else : ?>
-        <input type="hidden" id="avatar_rating" name="avatar_rating" value="<?php echo get_option('avatar_rating'); ?>" />
-      <?php endif; ?>
       <tr valign="top">
         <th scope="row"><?php _e('Default Avatar') ?></th>
         <td class="defaultavatarpicker">
@@ -205,4 +203,7 @@ $wpua_options_page_title = apply_filters('wpua_options_page_title', $wpua_option
     </table>
     <?php submit_button(); ?>
   </form>
+</td>
+    <td> <a target="_blank" href="http://www.flippercode.com/product/wp-user-avatar/?utm_source=wordpress&utm_medium=banner&utm_campaign=wpuseravatar" title="upgrade now"><img src="https://pbs.twimg.com/media/CEZuKfgUMAEB0W7.jpg" width="500"></a></td>
+  </tr></table>
 </div>
