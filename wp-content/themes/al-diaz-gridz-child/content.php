@@ -1,6 +1,6 @@
 <?php
 /**
- * @package gridz
+ * @package al-diaz-theme
  */
 ?>
 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
