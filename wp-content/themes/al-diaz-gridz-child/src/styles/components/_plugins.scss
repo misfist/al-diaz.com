@@ -1,0 +1,30 @@
+// -----------------------------------------------------------------------------
+// Specify styling for plugins
+// -----------------------------------------------------------------------------
+
+
+a.dot-irecommendthis {
+
+
+    &:hover,
+    &:focus{
+        color: darken( $brand-color, 7 ) !important;
+    }
+
+    .dot-irecommendthis-count:before {
+
+        @extend .fa;
+        @extend .fa-heart-o;
+
+    }
+
+    &.active {
+        color: $brand-color !important;
+
+        .dot-irecommendthis-count:before {
+
+            @extend .fa-heart;
+
+        }
+    }
+}

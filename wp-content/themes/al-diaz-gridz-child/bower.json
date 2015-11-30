@@ -1,0 +1,28 @@
+{
+  "name": "al-diaz-theme",
+  "description": "Child theme, based on Gridz.",
+  "main": "index.php",
+  "authors": [
+    "Pea"
+  ],
+  "license": "GPLv3",
+  "keywords": [
+    "wordpress",
+    "multisite",
+    "theme"
+  ],
+  "homepage": "https://github.com/misfist/al-diaz.com",
+  "moduleType": [],
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "assets/vendor/",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "font-awesome": "fontawesome#~4.5.0"
+  }
+}
