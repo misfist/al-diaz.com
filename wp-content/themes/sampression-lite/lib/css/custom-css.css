@@ -1,0 +1,16 @@
+.site-title .home-link { font: bold 20px/1.3 Kreon; color: #9BB0AB; }
+.site-description { font: normal 16px/1.3 Kreon; color: #9BB0AB; }
+body { font: 18px/1.6 Droid Serif; }
+.entry-title { font: 36px/1.3 Kreon; }
+.entry-meta { font: 14px/1.6 Droid Serif; }
+/* Some example CSS */
+            /* Any changes made will appear in live site */
+
+            /*@import url(\&quot;something.css\&quot;);
+            body {
+              margin: 0;
+              padding: 3em 6em;
+              font-family: tahoma, arial, sans-serif;
+              color: #000;
+            }
+     */
