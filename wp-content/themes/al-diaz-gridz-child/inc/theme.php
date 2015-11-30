@@ -18,7 +18,7 @@ function al_diaz_theme_enqueue_scripts() {
 
     // wp_register_script( 'al-diaz-child', trailingslashit( get_stylesheet_directory() ) . '/assets/scripts/main.js', array( 'jquery' ), '', true );
 
-    // wp_enqueue_script( 'al-diaz-child' );
+    wp_enqueue_script( 'al-diaz-child' );
 
     
 }
