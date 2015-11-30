@@ -4,11 +4,9 @@
 *.tar
 *.gz
 .DS_Store
-
 .sass-cache
+sitemap.xml
 
-wp-admin/
-wp-include/
 wp-content/uploads/
 wp-content/blogs.dir/
 wp-content/upgrade/
@@ -18,5 +16,21 @@ wp-content/wp-cache-config.php
 wp-content/cache/
 wp-content/backups/
 wp-content/backupwordpress*
-sitemap.xml
 
+# Exclude WP Core
+wp-admin/
+wp-includes/
+index.php
+wp-activate.php
+wp-blog-header.php
+wp-comments-post.php
+wp-config.php
+wp-cron.php
+wp-links-opml.php
+wp-load.php
+wp-login.php
+wp-mail.php
+wp-settings.php
+wp-signup.php
+wp-trackback.php
+xmlrpc.php
