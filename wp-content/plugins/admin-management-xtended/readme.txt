@@ -3,7 +3,7 @@ Contributors: Alphawolf
 Donate link: http://www.schloebe.de/donate/
 Tags: admin, ajax, management, cms, post, pages, category, inline, media, revision, link, bookmark, drag-and-drop, drag drop
 Requires at least: 4.3
-Tested up to: 4.3.9999
+Tested up to: 4.4.9999
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -104,6 +104,10 @@ Please visit [the official website](http://www.schloebe.de/wordpress/admin-manag
 4. Installation finished.
 
 == Changelog ==
+
+= 2.4.0.1 =
+* FIXED: Privilege escalation issue fixed (Thanks Kacper Szurek!)
+* FIXED: Code cleanup
 
 = 2.4.0 =
 * NEW: Localization update (sl_SI)
