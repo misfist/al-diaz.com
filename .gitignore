@@ -7,6 +7,8 @@
 
 .sass-cache
 
+wp-admin/
+wp-include/
 wp-content/uploads/
 wp-content/blogs.dir/
 wp-content/upgrade/
