@@ -8,23 +8,31 @@ a.dot-irecommendthis {
 
     &:hover,
     &:focus{
-        color: darken( $brand-color, 7 ) !important;
+        color: darken( $primary-color, 7 );
     }
 
     .dot-irecommendthis-count:before {
 
         @extend .fa;
         @extend .fa-heart-o;
+        margin-right: 5px;
 
     }
 
     &.active {
-        color: $brand-color !important;
+        color: $primary-color;
 
         .dot-irecommendthis-count:before {
 
             @extend .fa-heart;
 
         }
+    }
+}
+
+.post-views-count {
+    .icon {
+        @extend .fa;
+        @extend .fa-eye;
     }
 }

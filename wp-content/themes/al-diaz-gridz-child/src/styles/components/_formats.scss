@@ -1,0 +1,50 @@
+// -----------------------------------------------------------------------------
+// This file contains all styles related to post formats.
+// -----------------------------------------------------------------------------
+
+h1.entry-title {
+    margin-top: 10px;
+
+    &:before {
+        @extend .fa;
+        @extend .fa-thumb-tack;
+        font-size: 1.5rem;
+        color: $mid-grey;
+        margin-right: 10px;
+    }
+}
+
+.format-link {
+
+    h1.entry-title {
+        @extend .fa-link;
+    }
+
+}
+
+.format-audio {
+
+    h1.entry-title {
+        @extend .fa-volume-up;
+    }
+
+}
+
+.format-video {
+
+    h1.entry-title {
+        @extend .fa-video-camera;
+    }
+
+}
+
+.format-image {
+
+    h1.entry-title {
+        @extend .fa-picture-o;
+    }
+
+}
+
+
+

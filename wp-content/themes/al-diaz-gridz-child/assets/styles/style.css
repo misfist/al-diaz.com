@@ -12,7 +12,7 @@
   font-weight: normal;
   font-style: normal; }
 
-.fa, a.dot-irecommendthis .dot-irecommendthis-count:before {
+.fa, a.dot-irecommendthis .dot-irecommendthis-count:before, .post-views-count .icon, h1.entry-title:before {
   display: inline-block;
   font: normal normal normal 14px / 1 FontAwesome;
   font-size: inherit;
@@ -69,10 +69,10 @@
 .fa-pull-right {
   float: right; }
 
-.fa.fa-pull-left, a.dot-irecommendthis .fa-pull-left.dot-irecommendthis-count:before {
+.fa.fa-pull-left, a.dot-irecommendthis .fa-pull-left.dot-irecommendthis-count:before, .post-views-count .fa-pull-left.icon, h1.fa-pull-left.entry-title:before {
   margin-right: .3em; }
 
-.fa.fa-pull-right, a.dot-irecommendthis .fa-pull-right.dot-irecommendthis-count:before {
+.fa.fa-pull-right, a.dot-irecommendthis .fa-pull-right.dot-irecommendthis-count:before, .post-views-count .fa-pull-right.icon, h1.fa-pull-right.entry-title:before {
   margin-left: .3em; }
 
 /* Deprecated as of 4.4.0 */
@@ -82,10 +82,10 @@
 .pull-left {
   float: left; }
 
-.fa.pull-left, a.dot-irecommendthis .pull-left.dot-irecommendthis-count:before {
+.fa.pull-left, a.dot-irecommendthis .pull-left.dot-irecommendthis-count:before, .post-views-count .pull-left.icon, h1.pull-left.entry-title:before {
   margin-right: .3em; }
 
-.fa.pull-right, a.dot-irecommendthis .pull-right.dot-irecommendthis-count:before {
+.fa.pull-right, a.dot-irecommendthis .pull-right.dot-irecommendthis-count:before, .post-views-count .pull-right.icon, h1.pull-right.entry-title:before {
   margin-left: .3em; }
 
 .fa-spin {
@@ -289,7 +289,7 @@
 .fa-volume-down:before {
   content: ""; }
 
-.fa-volume-up:before {
+.fa-volume-up:before, .format-audio h1.entry-title:before {
   content: ""; }
 
 .fa-qrcode:before {
@@ -353,12 +353,13 @@
 .fa-indent:before {
   content: ""; }
 
-.fa-video-camera:before {
+.fa-video-camera:before, .format-video h1.entry-title:before {
   content: ""; }
 
 .fa-photo:before,
 .fa-image:before,
-.fa-picture-o:before {
+.fa-picture-o:before,
+.format-image h1.entry-title:before {
   content: ""; }
 
 .fa-pencil:before {
@@ -495,7 +496,7 @@
 .fa-fire:before {
   content: ""; }
 
-.fa-eye:before {
+.fa-eye:before, .post-views-count .icon:before {
   content: ""; }
 
 .fa-eye-slash:before {
@@ -585,7 +586,7 @@
 .fa-linkedin-square:before {
   content: ""; }
 
-.fa-thumb-tack:before {
+.fa-thumb-tack:before, h1.entry-title:before {
   content: ""; }
 
 .fa-external-link:before {
@@ -697,7 +698,8 @@
   content: ""; }
 
 .fa-chain:before,
-.fa-link:before {
+.fa-link:before,
+.format-link h1.entry-title:before {
   content: ""; }
 
 .fa-cloud:before {
@@ -2081,33 +2083,18 @@
 /**
  * Set up a decent box model on the root element
  */
-html {
-  box-sizing: border-box; }
-
 /**
  * Make all elements from the DOM inherit from the parent box-sizing
  * Since `*` has a specificity of 0, it does not override the `html` value
  * making all elements inheriting from the root box-sizing value
  * See: https://css-tricks.com/inheriting-box-sizing-probably-slightly-better-best-practice/
  */
-*, *::before, *::after {
-  box-sizing: inherit; }
-
-/**
- * Basic styles for links
- */
-a {
-  color: #EB1832;
-  text-decoration: none; }
-  a:hover, a:active, a:focus {
-    color: #222;
-    text-decoration: underline; }
-
 /**
  * Basic typography style for copy text
  */
 body {
-  color: #222; }
+  color: #222;
+  font: normal 100%/1.0 "Open Sans", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif; }
 
 /**
  * Clear inner floats
@@ -2151,13 +2138,51 @@ body {
   width: 1px; }
 
 a.dot-irecommendthis:hover, a.dot-irecommendthis:focus {
-  color: #ce1229 !important; }
+  color: #ce1229; }
+
+a.dot-irecommendthis .dot-irecommendthis-count:before {
+  margin-right: 5px; }
 
 a.dot-irecommendthis.active {
-  color: #EB1832 !important; }
+  color: #EB1832; }
+
+h1.entry-title {
+  margin-top: 10px; }
+  h1.entry-title:before {
+    font-size: 1.5rem;
+    color: #999;
+    margin-right: 10px; }
+
+.featured-media {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+  max-width: 100%;
+  height: auto; }
+
+.featured-media iframe,
+.featured-media object,
+.featured-media embed {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%; }
 
 #navigation {
   margin-bottom: 0; }
+
+#header .site-title {
+  font-size: 2rem !important;
+  font-family: "Helvetica Neue Black", "Helvetica Neue", "Helvetica", "Arial", sans-serif !important;
+  font-weight: bold !important; }
+
+.site-info {
+  width: 60%; }
+  .site-info .site-description {
+    font-size: 1.2rem;
+    break-word: normal; }
 
 #content {
   background: url("../images/background.jpg") no-repeat center center fixed;
@@ -2171,3 +2196,7 @@ a {
   color: #EB1832; }
   a:hover, a:focus {
     color: #ce1229; }
+
+.primary-menu ul li a {
+  text-transform: uppercase;
+  font-size: 1.1rem; }
