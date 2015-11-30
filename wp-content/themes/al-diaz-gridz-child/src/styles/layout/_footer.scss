@@ -1,3 +1,16 @@
 // -----------------------------------------------------------------------------
 // This file contains all styles related to the footer of the site/application.
 // -----------------------------------------------------------------------------
+
+
+#footer {
+    a {
+        text-decoration: none;
+        color: $white;
+    }
+
+    .widget-title {
+        text-transform: uppercase;
+        color: $white;
+    }
+}

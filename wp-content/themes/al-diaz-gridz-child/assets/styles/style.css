@@ -2137,6 +2137,17 @@ body {
   position: absolute;
   width: 1px; }
 
+#header .site-title {
+  text-transform: uppercase; }
+
+#footer a {
+  text-decoration: none;
+  color: #fff; }
+
+#footer .widget-title {
+  text-transform: uppercase;
+  color: #fff; }
+
 a.dot-irecommendthis:hover, a.dot-irecommendthis:focus {
   color: #ce1229; }
 
